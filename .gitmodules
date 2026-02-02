@@ -1,0 +1,3 @@
+[submodule "simulator/evaml_2025_server"]
+	path = simulator/evaml_2025_server
+	url = git@github.com:PCBMoreira0/evaml_2025_server.git
