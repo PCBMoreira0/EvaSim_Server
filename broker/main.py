@@ -1,6 +1,7 @@
 from paho.mqtt import client as mqtt_client
 
 client = mqtt_client.Client()
+client.connect("0.0.0.0", 1883, 60)
 
 def on_message(client, userdata, message):
     if message.topic.startswith("WEBSOCKET/BROKER"):
@@ -11,11 +12,10 @@ def on_message(client, userdata, message):
     print(f"Forwarded message: {message.payload.decode()} on topic {message.topic}")
 
 client.on_message = on_message
-client.subscribe("WEBSOCKET/#")
+client.subscribe("WEBSOCKET/BROKER/#")
 client.subscribe("EVA/BROKER/#")
 
 try:
-    client.connect("0.0.0.0", 1883, 60)
     print("MQTT Broker is running...")
     client.loop_forever()
 except KeyboardInterrupt:

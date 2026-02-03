@@ -22,6 +22,8 @@ class MqttJsonConverter:
             topic = "TALK_RESPONSE"
         elif command == "listen_response":
             topic = "LISTEN_RESPONSE"
+        elif command == "audio_response":
+            topic = "AUDIO_RESPONSE"
         
-        payload = ""
+        payload = json_message["parameter"]
         return topic, payload
