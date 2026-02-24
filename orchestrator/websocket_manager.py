@@ -5,7 +5,6 @@ import asyncio
 class WebSocketManager:
     def __init__(self):
         self.active_connections : Dict[str, WebSocket] = {}
-        self.queue = asyncio.Queue()
         self.queue_task = None
 
     async def connect(self, websocket: WebSocket, user_id: str):
@@ -27,29 +26,11 @@ class WebSocketManager:
                 return client_id
         return None
     
-    def send_message(self, message: str, user_id: str):
+    async def send_message(self, message: str, user_id: str):
         websocket = self.get_websocket(user_id)
         if websocket:
-            self.queue.put_nowait((websocket, message))
-
-    async def __process_queue(self, queue):
-        try:
-            while True:
-                message = await queue.get()
-                websocket, payload = message
-                await websocket.send_text(payload)
-                queue.task_done()
-        except asyncio.CancelledError:
-            pass
-    
-    def start_queue_loop(self):
-        if not self.queue_task:
-            self.queue_task = asyncio.create_task(self.__process_queue(self.queue))
-
-    def stop_queue_loop(self):
-        if self.queue_task:
-            self.queue_task.cancel()
+            await websocket.send_json(message)
 
     async def broadcast(self, message: str):
         for connection in self.active_connections.values():
-            await connection.send_text(message)
+            await connection.send_json(message)

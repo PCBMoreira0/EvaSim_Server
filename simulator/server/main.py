@@ -18,7 +18,7 @@ def on_message(client, userdata, message):
 mqtt_communicator.set_onmessage(on_message)
 
 @app.websocket("/ws/{user_id}")
-async def websocket(websocket: WebSocket, user_id: str):
+async def websocket_endpoint(websocket: WebSocket, user_id: str):
     # if os.getenv("USER_ID") != user_id:
     #     await websocket.close()
     #     return
@@ -42,6 +42,7 @@ async def websocket(websocket: WebSocket, user_id: str):
 
             if finished_task == receive_task:
                 data = finished_task.result()
+                print(data)
                 (topic, payload) = MqttJsonConverter.json_to_mqtt(data)
                 mqtt_communicator.publish(topic, payload)
 
