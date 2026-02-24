@@ -22,6 +22,7 @@ async def create_container(name: str, image: str, user_id: str):
             detach=True,
             name=name,
             auto_remove=True,
+            network="orchestrator_evasim_network",
             environment={"USER_ID": user_id})
         
         while container.status != 'running':
@@ -32,15 +33,24 @@ async def create_container(name: str, image: str, user_id: str):
     
     except docker.errors.ImageNotFound:
         print("Error: Image not found. Make sure Docker is running and connected.")
+        return None
     except Exception as e:
         print(f"An error occurred: {e}")
+        return None
 
 
 @app.get("/init")
 async def init():
     global counter
     counter += 1
-    user_ids[str(counter)] = await create_container("container_sim_" + str(counter), "m1_container", str(counter))
+    sim_id = await create_container("container_sim_" + str(counter), "evasim/sim:dev", str(counter))
+    server_id = await create_container("container_server_" + str(counter), "evasim/server:dev", str(counter))
+    if sim_id is None or server_id is None:
+        return {"message": "Failed to create simulation environment", "user_id": counter}
+    
+    container = {"sim": sim_id, "server": server_id}
+    user_ids[str(counter)] = container
+
     return {"message": "simulation environment created", "user_id": counter}
 
 
@@ -52,18 +62,36 @@ async def websocket_endpoint(websocket: WebSocket, user_id: str):
     
     await websocket_manager.connect(websocket, user_id)    
 
-    container = docker_client.containers.get(user_ids[user_id])
-    container.reload()
-    container_networks = container.attrs['NetworkSettings']['Networks']
-    container_ip = list(container_networks.values())[0]['IPAddress']
+    container = docker_client.containers.get(user_ids[user_id]["server"])
+    # container.reload()
+    # container_networks = container.attrs['NetworkSettings']['Networks']
+    # container_ip = list(container_networks.values())[0]['IPAddress']
+    # print("IP: " + container_ip)
 
-    container_websocket = await websockets.connect(f"ws://{container_ip}:8000/ws/{user_id}")
+    container_websocket = await websockets.connect(f"ws://{container.name}:8000/ws/{user_id}")
 
     try:
         while True:
-            message = await websocket.receive_text()
-            print(message)
-            await container_websocket.send(message)
+            receive_task = asyncio.create_task(websocket.receive_text())
+            send_task = asyncio.create_task(container_websocket.recv())
+
+            done, pending = await asyncio.wait(
+                [receive_task, send_task],
+                return_when=asyncio.FIRST_COMPLETED
+            )
+        
+            for task in pending:
+                task.cancel()
+
+            finished_task = done.pop()
+
+            if finished_task == receive_task:
+                data = finished_task.result()
+                await container_websocket.send(data)
+
+            elif finished_task == send_task:
+                data = finished_task.result()
+                await websocket.send_text(data)
 
     except WebSocketDisconnect:
         await container_websocket.close()

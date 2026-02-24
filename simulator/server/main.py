@@ -7,7 +7,7 @@ import asyncio
 app = FastAPI()
 
 # mqtt_communicator = MqttCommunicator(broker_address=os.getenv("MQTT_BROKER_ADDRESS"), port=int(os.getenv("MQTT_BROKER_PORT")))
-mqtt_communicator = MqttCommunicator(broker_address="0.0.0.0", port=1883)
+mqtt_communicator = MqttCommunicator(broker_address="host.docker.internal", port=1883, user_id=os.getenv("USER_ID"))
 mqtt_communicator.connect()
 
 queue = asyncio.Queue()
@@ -19,9 +19,9 @@ mqtt_communicator.set_onmessage(on_message)
 
 @app.websocket("/ws/{user_id}")
 async def websocket_endpoint(websocket: WebSocket, user_id: str):
-    # if os.getenv("USER_ID") != user_id:
-    #     await websocket.close()
-    #     return
+    if os.getenv("USER_ID") != user_id:
+        await websocket.close()
+        return
     
     await websocket.accept()
 
