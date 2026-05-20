@@ -5,37 +5,57 @@ class MqttJsonConverter:
         if command == "TALK":
             return {
                 "command": "talk",
-                "parameter": payload
+                "parameter": {"text": payload}
             }
         
         elif command == "LISTEN":
             return {
                 "command": "listen",
-                "parameter": payload
+                "parameter": {"request": payload}
             }
         elif command == "AUDIO":
             parameter = payload.split("|")
             
             return {
                 "command": "audio",
-                "parameter": [{"audio":parameter[0]}, {"block":parameter[1]}]
+                "parameter": {"audio":parameter[0], "block":parameter[1].lower() == "true"}
             }
-        elif command == "LED":
+        elif command == "LEDS":
             return {
-                "command": "led",
-                "parameter": payload
+                "command": "leds",
+                "parameter": {"state": payload}
             }
         elif command == "EVAEMOTION":
             return {
                 "command": "emotion",
-                "parameter": payload
+                "parameter": {"type": payload}
             }
         elif command == "LIGHT":
             parameter = payload.split("|")
 
             return {
                 "command": "light",
-                "parameter": [{"color":parameter[0]}, {"state":parameter[1]}]
+                "parameter": {"color":parameter[0], "state":parameter[1]}
+            }
+        elif command == "MOTION":
+            return {
+                "command": "motion",
+                "parameter": {"head":payload}
+            }
+        elif command == "QRREAD":
+            return {
+                "command":"qrread",
+                "parameter": {"request":"SERVICE_REQUEST"}
+            }
+        elif command == "WAIT":
+            return {
+                "command":"wait",
+                "parameter":{"duration":int(payload)}
+            }
+        elif command == "USEREMOTION":
+            return {
+                "command":"useremotion",
+                "parameter": {"request":"SERVICE_REQUEST"}
             }
         
     @staticmethod
@@ -48,6 +68,10 @@ class MqttJsonConverter:
             topic = "LISTEN_RESPONSE"
         elif command == "audio_response":
             topic = "AUDIO_RESPONSE"
+        elif command == "qrread_response":
+            topic = "QRREAD_RESPONSE"
+        elif command == "useremotion_response":
+            topic = "USEREMOTION_RESPONSE"
         
         payload = json_message["parameter"]
         return topic, payload

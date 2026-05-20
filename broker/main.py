@@ -1,7 +1,8 @@
 from paho.mqtt import client as mqtt_client
 
 client = mqtt_client.Client()
-client.connect("host.docker.internal", 1883, 60)
+# client.connect("host.docker.internal", 1883, 60)
+client.connect("localhost", 1883, 60)
 
 def on_message(client, userdata, message):
     if message.topic.startswith("WEBSOCKET/BROKER"):

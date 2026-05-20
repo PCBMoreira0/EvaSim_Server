@@ -91,6 +91,7 @@ async def websocket_endpoint(websocket: WebSocket, user_id: str):
 
             elif finished_task == send_task:
                 data = finished_task.result()
+                print("enviando mensagem......")
                 await websocket.send_text(data)
 
     except WebSocketDisconnect:
