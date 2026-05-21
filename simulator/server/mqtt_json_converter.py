@@ -57,6 +57,17 @@ class MqttJsonConverter:
                 "command":"useremotion",
                 "parameter": {"request":"SERVICE_REQUEST"}
             }
+        elif command == "END_SCRIPT":
+            return {
+                "command":"end_script",
+                "parameter":{}
+            }
+        elif command == "ERROR":
+            parameter = payload.split("|")
+            return {
+                "command":"error",
+                "parameter":{"type":parameter[0], "description":parameter[1]}
+            }
         
     @staticmethod
     def json_to_mqtt(json_message : dict) -> tuple[str, str]:
@@ -72,6 +83,14 @@ class MqttJsonConverter:
             topic = "QRREAD_RESPONSE"
         elif command == "useremotion_response":
             topic = "USEREMOTION_RESPONSE"
+        elif command == "start":
+            topic = "START"
+        elif command == "set_script":
+            topic = "SET_SCRIPT"
+        elif command == "kill":
+            topic = "KILL"
+        elif command == "reset":
+            topic = "RESET"
         
         payload = json_message["parameter"]
         return topic, payload
