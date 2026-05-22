@@ -11,11 +11,15 @@ class WebSocketManager:
         await websocket.accept()
         self.active_connections[user_id] = websocket
 
-    def disconnect(self, websocket: WebSocket):
+    async def disconnect(self, websocket: WebSocket):
         for client_id, connection in self.active_connections.items():
             if connection == websocket:
                 del self.active_connections[client_id]
                 break
+        try:
+            await websocket.close()
+        except RuntimeError:
+            pass
 
     def get_websocket(self, user_id: str) -> WebSocket:
         return self.active_connections.get(user_id)

@@ -66,7 +66,7 @@ class MqttJsonConverter:
             parameter = payload.split("|")
             return {
                 "command":"error",
-                "parameter":{"type":parameter[0], "description":parameter[1]}
+                "parameter":{"type":parameter[0].lower(), "description":parameter[1]}
             }
         
     @staticmethod

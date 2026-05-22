@@ -6,9 +6,9 @@ import asyncio
 
 app = FastAPI()
 
-# mqtt_communicator = MqttCommunicator(broker_address=os.getenv("MQTT_BROKER_ADDRESS"), port=int(os.getenv("MQTT_BROKER_PORT")))
-mqtt_communicator = MqttCommunicator(broker_address="host.docker.internal", port=1883, user_id=os.getenv("USER_ID"))
-mqtt_communicator.connect()
+mqtt_communicator = MqttCommunicator(broker_address=os.getenv("MQTT_BROKER_ADDRESS", "host.docker.internal"), port=int(os.getenv("MQTT_BROKER_PORT", 1883)), user_id=os.getenv("USER_ID", "default_user"))
+
+# mqtt_communicator = MqttCommunicator(broker_address=os.getenv("MQTT_BROKER_ADDRESS", "localhost"), port=int(os.getenv("MQTT_BROKER_PORT", 1883)), user_id=os.getenv("USER_ID", "default_user"))
 
 queue = asyncio.Queue()
 
@@ -17,13 +17,16 @@ def on_message(client, userdata, message):
 
 mqtt_communicator.set_onmessage(on_message)
 
+
 @app.websocket("/ws/{user_id}")
 async def websocket_endpoint(websocket: WebSocket, user_id: str):
-    if os.getenv("USER_ID") != user_id:
+    if os.getenv("USER_ID", "default_user") != user_id:
         await websocket.close()
         return
     
     await websocket.accept()
+
+    mqtt_communicator.connect()
 
     while True:
         try:
@@ -44,6 +47,7 @@ async def websocket_endpoint(websocket: WebSocket, user_id: str):
                 data = finished_task.result()
                 print(data)
                 (topic, payload) = MqttJsonConverter.json_to_mqtt(data)
+                print(topic + "|" + payload)
                 mqtt_communicator.publish(topic, payload)
 
             elif finished_task == queue_task:

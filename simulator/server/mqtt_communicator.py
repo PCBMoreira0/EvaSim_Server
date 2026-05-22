@@ -31,3 +31,4 @@ class MqttCommunicator:
 
     def disconnect(self):
         self.client.disconnect()
+        self.client.loop_stop()
