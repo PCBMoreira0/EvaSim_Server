@@ -3,3 +3,16 @@ uvicorn[standard]
 websockets
 asyncio
 docker
+
+
+opencv_contrib_python
+pyzbar
+ibm_cloud_sdk_core
+ibm_watson
+numpy
+tensorflow
+mediapipe
+opencv-python
+SpeechRecognition
+misaki
+python-multipart

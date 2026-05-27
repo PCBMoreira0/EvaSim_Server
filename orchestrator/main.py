@@ -1,11 +1,20 @@
+from contextlib import asynccontextmanager
+
 import docker
 import asyncio
 import uvicorn
-from fastapi import FastAPI, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from websocket_manager import WebSocketManager
 import websockets
+import api
+
 
 app = FastAPI()
+
+app.include_router(api.router)
+
+
+
 docker_client = docker.from_env()
 
 websocket_manager = WebSocketManager()
@@ -21,7 +30,6 @@ async def create_container(name: str, image: str, user_id: str):
             image,
             detach=True,
             name=name,
-            auto_remove=True,
             network="orchestrator_evasim_network",
             environment={"USER_ID": user_id})
         
@@ -39,7 +47,7 @@ async def create_container(name: str, image: str, user_id: str):
         return None
 
 
-@app.get("/init")
+@app.post("/init")
 async def init():
     global counter
     simulator_id = await create_container("container_simulator_" + str(counter), "evasim/simulator:dev", str(counter))
@@ -52,20 +60,23 @@ async def init():
 
     return message
 
-@app.get("/delete/{user_id}")
+@app.delete("/delete/{user_id}")
 async def delete(user_id : str):
     socket = websocket_manager.get_websocket(user_id)
     if socket != None:
         await websocket_manager.disconnect(socket)
 
-    container_id = user_ids[user_id]
+    container_id = user_ids.get(user_id)
     if container_id != None:
         container = docker_client.containers.get(container_id)
         container.remove(force=True)
     
         return {"message": "simulation environment deleted", "user_id": user_id}
 
-    return {"message": "simulator does not exist.", "user_id": user_id}
+    raise HTTPException(
+            status_code=404,
+            detail="Container não encontrado"
+        )
 
 
 @app.websocket("/ws/{user_id}")
@@ -114,7 +125,6 @@ async def websocket_endpoint(websocket: WebSocket, user_id: str):
                 await container_websocket.send(data)
 
             elif finished_task == send_task:
-                print("enviando mensagem......")
                 await websocket.send_text(data)
 
     finally:
@@ -125,6 +135,7 @@ async def websocket_endpoint(websocket: WebSocket, user_id: str):
 
         await container_websocket.close()
         await websocket_manager.disconnect(websocket)
+
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8000)
