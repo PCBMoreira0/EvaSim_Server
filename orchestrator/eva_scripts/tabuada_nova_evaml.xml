@@ -1,0 +1,1148 @@
+<evaml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="Jogo_Tabuada" xsi:noNamespaceSchemaLocation="../robot_package/xml_schema/evaml_schema.xsd">
+  <settings>
+    <voice type="pt-BR_IsabelaV3Voice" commMode="NULL" />
+    <lightEffects mode="ON" commMode="NULL" />
+    <audioEffects mode="ON" commMode="NULL" vol="100%" />
+  </settings>
+  <script>
+    <counter var="pont_min" op="=" value="0" commMode="NULL" />
+    <useMacro macro="Apresenta" commMode="NULL" />
+    <useMacro macro="Fixa_dolar" commMode="NULL" />
+    <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">$1, vamos jogar o jogo da tabuada. Mas, antes de começar o jogo, você gostaria de saber nossas regras?</talk>
+    <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+    <switch var="$" commMode="NULL">
+      <case op="exact" value="sim" commMode="NULL">
+        <useMacro macro="Regras" commMode="NULL" />
+        <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">$1, Agora que conhece brevemente as regras do jogo eu vou fazer mais algumas perguntas.</talk>
+    <useMacro macro="Multiplicando" commMode="NULL" />
+    <useMacro macro="Nivelamento" commMode="NULL" />
+    <useMacro macro="Multiplicando" commMode="NULL" />
+    <useMacro macro="Nivelamento" commMode="NULL" />
+    <useMacro macro="Multiplicando" commMode="NULL" />
+    <useMacro macro="Nivelamento" commMode="NULL" />
+    <switch var="pont_min" commMode="NULL">
+      <case op="lt" value="2" commMode="NULL">
+        <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Então agora iniciaremos o nível 1, vamos testar o seu conhecimento nas tabuadas.</talk>
+        <counter var="pontos" op="=" value="0" commMode="NULL" />
+        <useMacro macro="Multiplicando" commMode="NULL" />
+        <counter var="ponto" op="=" value="0" commMode="NULL" />
+       <counter var="Loop" op="=" value="1" /><switch id="LOOP_ID1_Loop" var="Loop"><case op="lte" value="3"><useMacro macro="Multiplicando" commMode="NULL" />
+        <useMacro macro="nível_1" commMode="NULL" />
+       <counter var="Loop" op="+" value="1" /><goto target="LOOP_ID1_Loop" /></case></switch><counter var="multiplicando" op="=" value="0" commMode="NULL" />
+       <switch var="ponto" commMode="NULL">
+        <case op="eq" value="3" commMode="NULL">
+          <counter var="ponto" op="=" value="0" commMode="NULL" />
+          <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Que bom que voce chegou aqui no nível dois!</talk>
+          <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Podemos começar?</talk>
+          <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+          <switch var="$" commMode="NULL">
+            <case op="exact" value="sim" commMode="NULL">
+              <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Então nós iremos começar agora.</talk>
+              <counter var="Loop" op="=" value="1" /><switch id="LOOP_ID2_Loop" var="Loop"><case op="lte" value="3"><useMacro macro="Multiplicando_2" commMode="NULL" />
+                <useMacro macro="nível_2" commMode="NULL" />
+              <counter var="Loop" op="+" value="1" /><goto target="LOOP_ID2_Loop" /></case></switch><switch var="ponto" commMode="NULL">
+                <case op="gte" value="2" commMode="NULL">
+                  <counter var="ponto" op="=" value="0" commMode="NULL" />
+                  <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Que bom que voce chegou aqui no nível três!</talk>
+                  <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Podemos começar?</talk>
+                  <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+                  <switch var="$" commMode="NULL">
+                    <case op="exact" value="sim" commMode="NULL">
+                      <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Então vamos começar.</talk>
+                      <counter var="Loop" op="=" value="1" /><switch id="LOOP_ID3_Loop" var="Loop"><case op="lte" value="3"><useMacro macro="Multiplicando_2" commMode="NULL" />
+                        <useMacro macro="nível_3" commMode="NULL" />
+                      <counter var="Loop" op="+" value="1" /><goto target="LOOP_ID3_Loop" /></case></switch><useMacro macro="final" commMode="NULL" />
+                    </case>
+                    <case op="exact" value="não" commMode="NULL">
+                      <useMacro macro="final" commMode="NULL" />
+                    </case>
+                  </switch>
+               </case>
+              </switch>
+            </case>
+            <case op="exact" value="não" commMode="NULL">
+              <useMacro macro="final" commMode="NULL" />
+            </case>
+          </switch>
+        </case>  
+       </switch>
+      </case>
+      <case op="gte" value="2" commMode="NULL">
+        <useMacro macro="Multiplicando" commMode="NULL" />
+        <useMacro macro="Nivelamento_2" commMode="NULL" />
+        <useMacro macro="Multiplicando" commMode="NULL" />
+        <useMacro macro="Nivelamento_2" commMode="NULL" />
+        <switch var="pont_min" commMode="NULL">
+          <case op="lte" value="6" commMode="NULL">
+            <counter var="ponto" op="=" value="0" commMode="NULL" />
+            <counter var="pontos" op="=" value="3" commMode="NULL" />
+            <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Que bom que voce chegou aqui no nível dois!</talk>
+            <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Podemos começar?</talk>
+            <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+            <switch var="$" commMode="NULL">
+              <case op="exact" value="sim" commMode="NULL">
+                <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Então nós iremos começar agora.</talk>
+                <counter var="Loop" op="=" value="1" /><switch id="LOOP_ID1_Loop" var="Loop"><case op="lte" value="3"><useMacro macro="Multiplicando_2" commMode="NULL" />
+                  <useMacro macro="nível_2" commMode="NULL" />
+                <counter var="Loop" op="+" value="1" /><goto target="LOOP_ID1_Loop" /></case></switch><switch var="ponto" commMode="NULL">
+                  <case op="gte" value="2" commMode="NULL">
+                    <counter var="ponto" op="=" value="0" commMode="NULL" />
+                    <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Que bom que voce chegou aqui no nível três!</talk>
+                    <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Podemos começar?</talk>
+                    <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+                    <switch var="$" commMode="NULL">
+                      <case op="exact" value="sim" commMode="NULL">
+                        <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Então vamos começar.</talk>
+                        <counter var="Loop" op="=" value="1" /><switch id="LOOP_ID2_Loop" var="Loop"><case op="lte" value="3"><useMacro macro="Multiplicando_2" commMode="NULL" />
+                          <useMacro macro="nível_3" commMode="NULL" />
+                        <counter var="Loop" op="+" value="1" /><goto target="LOOP_ID2_Loop" /></case></switch><useMacro macro="final" commMode="NULL" />
+                      </case>
+                      <case op="exact" value="não" commMode="NULL">
+                        <useMacro macro="final" commMode="NULL" />
+                      </case>
+                    </switch>
+                 </case>
+                </switch>
+              </case>
+              <case op="exact" value="não" commMode="NULL">
+                <useMacro macro="final" commMode="NULL" />
+              </case>
+            </switch>
+          </case>
+          <default commMode="NULL">
+            <useMacro macro="Multiplicando" commMode="NULL" />
+            <useMacro macro="Nivelamento_3" commMode="NULL" />
+            <switch var="pont_min" commMode="NULL">
+              <case op="gte" value="19" commMode="NULL">
+                <counter var="pontos" op="=" value="6" commMode="NULL" />
+                <counter var="ponto" op="=" value="0" commMode="NULL" />
+                <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Que bom que voce chegou aqui no nível três!</talk>
+                <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Podemos começar?</talk>
+                <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+                <switch var="$" commMode="NULL">
+                  <case op="exact" value="sim" commMode="NULL">
+                    <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Então vamos começar.</talk>
+                    <counter var="Loop" op="=" value="1" /><switch id="LOOP_ID1_Loop" var="Loop"><case op="lte" value="3"><useMacro macro="Multiplicando_2" commMode="NULL" />
+                      <useMacro macro="nível_3" commMode="NULL" />
+                    <counter var="Loop" op="+" value="1" /><goto target="LOOP_ID1_Loop" /></case></switch><useMacro macro="final" commMode="NULL" />
+                  </case>
+                  <case op="exact" value="não" commMode="NULL">
+                    <useMacro macro="final" commMode="NULL" />
+                  </case>
+                </switch>
+              </case>
+              <default commMode="NULL">
+                <counter var="ponto" op="=" value="0" commMode="NULL" />
+            <counter var="pontos" op="=" value="3" commMode="NULL" />
+            <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Que bom que voce chegou aqui no nível dois!</talk>
+            <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Podemos começar?</talk>
+            <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+            <switch var="$" commMode="NULL">
+              <case op="exact" value="sim" commMode="NULL">
+                <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Então nós iremos começar agora.</talk>
+                <counter var="Loop" op="=" value="1" /><switch id="LOOP_ID1_Loop" var="Loop"><case op="lte" value="3"><useMacro macro="Multiplicando_2" commMode="NULL" />
+                  <useMacro macro="nível_2" commMode="NULL" />
+                <counter var="Loop" op="+" value="1" /><goto target="LOOP_ID1_Loop" /></case></switch><switch var="ponto" commMode="NULL">
+                  <case op="gte" value="2" commMode="NULL">
+                    <counter var="ponto" op="=" value="0" commMode="NULL" />
+                    <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Que bom que voce chegou aqui no nível três!</talk>
+                    <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Podemos começar?</talk>
+                    <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+                    <switch var="$" commMode="NULL">
+                      <case op="exact" value="sim" commMode="NULL">
+                        <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Então vamos começar.</talk>
+                        <counter var="Loop" op="=" value="1" /><switch id="LOOP_ID2_Loop" var="Loop"><case op="lte" value="3"><useMacro macro="Multiplicando_2" commMode="NULL" />
+                          <useMacro macro="nível_3" commMode="NULL" />
+                        <counter var="Loop" op="+" value="1" /><goto target="LOOP_ID2_Loop" /></case></switch><useMacro macro="final" commMode="NULL" />
+                      </case>
+                      <case op="exact" value="não" commMode="NULL">
+                        <useMacro macro="final" commMode="NULL" />
+                      </case>
+                    </switch>
+                 </case>
+                </switch>
+              </case>
+              <case op="exact" value="não" commMode="NULL">
+                <useMacro macro="final" commMode="NULL" />
+              </case>
+            </switch>
+              </default>
+            </switch>
+          </default>
+        </switch>
+      </case>
+    </switch>  
+      </case>
+      <case op="exact" value="não" commMode="NULL">
+        <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Certo. Então vamos começar, mas antes preciso te fazer algumas perguntas.
+        </talk>
+    <useMacro macro="Multiplicando" commMode="NULL" />
+    <useMacro macro="Nivelamento" commMode="NULL" />
+    <useMacro macro="Multiplicando" commMode="NULL" />
+    <useMacro macro="Nivelamento" commMode="NULL" />
+    <useMacro macro="Multiplicando" commMode="NULL" />
+    <useMacro macro="Nivelamento" commMode="NULL" />
+    <switch var="pont_min" commMode="NULL">
+      <case op="lt" value="2" commMode="NULL">
+        <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Então agora iniciaremos o nível 1, vamos testar o seu conhecimento nas tabuadas.</talk>
+        <counter var="pontos" op="=" value="0" commMode="NULL" />
+        <useMacro macro="Multiplicando" commMode="NULL" />
+        <counter var="ponto" op="=" value="0" commMode="NULL" />
+       <counter var="Loop" op="=" value="1" /><switch id="LOOP_ID1_Loop" var="Loop"><case op="lte" value="3"><useMacro macro="Multiplicando" commMode="NULL" />
+        <useMacro macro="nível_1" commMode="NULL" />
+       <counter var="Loop" op="+" value="1" /><goto target="LOOP_ID1_Loop" /></case></switch><counter var="multiplicando" op="=" value="0" commMode="NULL" />
+       <switch var="ponto" commMode="NULL">
+        <case op="eq" value="3" commMode="NULL">
+          <counter var="ponto" op="=" value="0" commMode="NULL" />
+          <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Que bom que voce chegou aqui no nível dois!</talk>
+          <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Podemos começar?</talk>
+          <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+          <switch var="$" commMode="NULL">
+            <case op="exact" value="sim" commMode="NULL">
+              <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Então nós iremos começar agora.</talk>
+              <counter var="Loop" op="=" value="1" /><switch id="LOOP_ID2_Loop" var="Loop"><case op="lte" value="3"><useMacro macro="Multiplicando_2" commMode="NULL" />
+                <useMacro macro="nível_2" commMode="NULL" />
+              <counter var="Loop" op="+" value="1" /><goto target="LOOP_ID2_Loop" /></case></switch><switch var="ponto" commMode="NULL">
+                <case op="gte" value="2" commMode="NULL">
+                  <counter var="ponto" op="=" value="0" commMode="NULL" />
+                  <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Que bom que voce chegou aqui no nível três!</talk>
+                  <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Podemos começar?</talk>
+                  <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+                  <switch var="$" commMode="NULL">
+                    <case op="exact" value="sim" commMode="NULL">
+                      <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Então vamos começar.</talk>
+                      <counter var="Loop" op="=" value="1" /><switch id="LOOP_ID3_Loop" var="Loop"><case op="lte" value="3"><useMacro macro="Multiplicando_2" commMode="NULL" />
+                        <useMacro macro="nível_3" commMode="NULL" />
+                      <counter var="Loop" op="+" value="1" /><goto target="LOOP_ID3_Loop" /></case></switch><useMacro macro="final" commMode="NULL" />
+                    </case>
+                    <case op="exact" value="não" commMode="NULL">
+                      <useMacro macro="final" commMode="NULL" />
+                    </case>
+                  </switch>
+               </case>
+              </switch>
+            </case>
+            <case op="exact" value="não" commMode="NULL">
+              <useMacro macro="final" commMode="NULL" />
+            </case>
+          </switch>
+        </case>  
+       </switch>
+      </case>
+      <case op="gte" value="2" commMode="NULL">
+        <useMacro macro="Multiplicando" commMode="NULL" />
+        <useMacro macro="Nivelamento_2" commMode="NULL" />
+        <useMacro macro="Multiplicando" commMode="NULL" />
+        <useMacro macro="Nivelamento_2" commMode="NULL" />
+        <switch var="pont_min" commMode="NULL">
+          <case op="lte" value="6" commMode="NULL">
+            <counter var="ponto" op="=" value="0" commMode="NULL" />
+            <counter var="pontos" op="=" value="3" commMode="NULL" />
+            <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Que bom que voce chegou aqui no nível dois!</talk>
+            <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Podemos começar?</talk>
+            <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+            <switch var="$" commMode="NULL">
+              <case op="exact" value="sim" commMode="NULL">
+                <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Então nós iremos começar agora.</talk>
+                <counter var="Loop" op="=" value="1" /><switch id="LOOP_ID1_Loop" var="Loop"><case op="lte" value="3"><useMacro macro="Multiplicando_2" commMode="NULL" />
+                  <useMacro macro="nível_2" commMode="NULL" />
+                <counter var="Loop" op="+" value="1" /><goto target="LOOP_ID1_Loop" /></case></switch><switch var="ponto" commMode="NULL">
+                  <case op="gte" value="2" commMode="NULL">
+                    <counter var="ponto" op="=" value="0" commMode="NULL" />
+                    <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Que bom que voce chegou aqui no nível três!</talk>
+                    <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Podemos começar?</talk>
+                    <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+                    <switch var="$" commMode="NULL">
+                      <case op="exact" value="sim" commMode="NULL">
+                        <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Então vamos começar.</talk>
+                        <counter var="Loop" op="=" value="1" /><switch id="LOOP_ID2_Loop" var="Loop"><case op="lte" value="3"><useMacro macro="Multiplicando_2" commMode="NULL" />
+                          <useMacro macro="nível_3" commMode="NULL" />
+                        <counter var="Loop" op="+" value="1" /><goto target="LOOP_ID2_Loop" /></case></switch><useMacro macro="final" commMode="NULL" />
+                      </case>
+                      <case op="exact" value="não" commMode="NULL">
+                        <useMacro macro="final" commMode="NULL" />
+                      </case>
+                    </switch>
+                 </case>
+                </switch>
+              </case>
+              <case op="exact" value="não" commMode="NULL">
+                <useMacro macro="final" commMode="NULL" />
+              </case>
+            </switch>
+          </case>
+          <default commMode="NULL">
+            <useMacro macro="Multiplicando" commMode="NULL" />
+            <useMacro macro="Nivelamento_3" commMode="NULL" />
+            <switch var="pont_min" commMode="NULL">
+              <case op="gte" value="19" commMode="NULL">
+                <counter var="pontos" op="=" value="6" commMode="NULL" />
+                <counter var="ponto" op="=" value="0" commMode="NULL" />
+                <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Que bom que voce chegou aqui no nível três!</talk>
+                <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Podemos começar?</talk>
+                <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+                <switch var="$" commMode="NULL">
+                  <case op="exact" value="sim" commMode="NULL">
+                    <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Então vamos começar.</talk>
+                    <counter var="Loop" op="=" value="1" /><switch id="LOOP_ID1_Loop" var="Loop"><case op="lte" value="3"><useMacro macro="Multiplicando_2" commMode="NULL" />
+                      <useMacro macro="nível_3" commMode="NULL" />
+                    <counter var="Loop" op="+" value="1" /><goto target="LOOP_ID1_Loop" /></case></switch><useMacro macro="final" commMode="NULL" />
+                  </case>
+                  <case op="exact" value="não" commMode="NULL">
+                    <useMacro macro="final" commMode="NULL" />
+                  </case>
+                </switch>
+              </case>
+              <default commMode="NULL">
+                <counter var="ponto" op="=" value="0" commMode="NULL" />
+            <counter var="pontos" op="=" value="3" commMode="NULL" />
+            <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Que bom que voce chegou aqui no nível dois!</talk>
+            <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Podemos começar?</talk>
+            <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+            <switch var="$" commMode="NULL">
+              <case op="exact" value="sim" commMode="NULL">
+                <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Então nós iremos começar agora.</talk>
+                <counter var="Loop" op="=" value="1" /><switch id="LOOP_ID1_Loop" var="Loop"><case op="lte" value="3"><useMacro macro="Multiplicando_2" commMode="NULL" />
+                  <useMacro macro="nível_2" commMode="NULL" />
+                <counter var="Loop" op="+" value="1" /><goto target="LOOP_ID1_Loop" /></case></switch><switch var="ponto" commMode="NULL">
+                  <case op="gte" value="2" commMode="NULL">
+                    <counter var="ponto" op="=" value="0" commMode="NULL" />
+                    <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Que bom que voce chegou aqui no nível três!</talk>
+                    <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Podemos começar?</talk>
+                    <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+                    <switch var="$" commMode="NULL">
+                      <case op="exact" value="sim" commMode="NULL">
+                        <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Então vamos começar.</talk>
+                        <counter var="Loop" op="=" value="1" /><switch id="LOOP_ID2_Loop" var="Loop"><case op="lte" value="3"><useMacro macro="Multiplicando_2" commMode="NULL" />
+                          <useMacro macro="nível_3" commMode="NULL" />
+                        <counter var="Loop" op="+" value="1" /><goto target="LOOP_ID2_Loop" /></case></switch><useMacro macro="final" commMode="NULL" />
+                      </case>
+                      <case op="exact" value="não" commMode="NULL">
+                        <useMacro macro="final" commMode="NULL" />
+                      </case>
+                    </switch>
+                 </case>
+                </switch>
+              </case>
+              <case op="exact" value="não" commMode="NULL">
+                <useMacro macro="final" commMode="NULL" />
+              </case>
+            </switch>
+              </default>
+            </switch>
+          </default>
+        </switch>
+      </case>
+    </switch>  
+      </case>
+    </switch>
+  </script>
+  <macros commMode="NULL">
+    <macro id="Pont_total" commMode="NULL">
+      <counter var="pontos" op="+" value="1" commMode="NULL" />
+    </macro>
+    <macro id="Fixa_tabuada" commMode="NULL">
+      <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+      <switch var="$" commMode="NULL">
+        <case op="exact" value="1" commMode="NULL">
+          <counter var="multiplicando" op="=" value="1" commMode="NULL" />
+        </case>
+        <case op="exact" value="2" commMode="NULL">
+          <counter var="multiplicando" op="=" value="2" commMode="NULL" />
+        </case>
+        <case op="exact" value="3" commMode="NULL">
+          <counter var="multiplicando" op="=" value="3" commMode="NULL" />
+        </case>
+        <case op="exact" value="4" commMode="NULL">
+          <counter var="multiplicando" op="=" value="4" commMode="NULL" />
+        </case>
+        <case op="exact" value="5" commMode="NULL">
+          <counter var="multiplicando" op="=" value="5" commMode="NULL" />
+        </case>
+        <case op="exact" value="6" commMode="NULL">
+          <counter var="multiplicando" op="=" value="6" commMode="NULL" />
+        </case>
+        <case op="exact" value="7" commMode="NULL">
+          <counter var="multiplicando" op="=" value="7" commMode="NULL" />
+        </case>
+        <case op="exact" value="8" commMode="NULL">
+          <counter var="multiplicando" op="=" value="8" commMode="NULL" />
+        </case>
+        <case op="exact" value="9" commMode="NULL">
+          <counter var="multiplicando" op="=" value="9" commMode="NULL" />
+        </case>
+        <case op="exact" value="10" commMode="NULL">
+          <counter var="multiplicando" op="=" value="10" commMode="NULL" />
+        </case>
+      </switch>
+      <counter var="multiplicando" op="*" value="1" commMode="NULL" />
+      <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">$ vezes 1 é = a #multiplicando </talk>
+      <counter var="multiplicando" op="/" value="1" commMode="NULL" />
+      <counter var="multiplicando" op="*" value="2" commMode="NULL" />
+      <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">$ vezes 2 é = a #multiplicando </talk>
+      <counter var="multiplicando" op="/" value="2" commMode="NULL" />
+      <counter var="multiplicando" op="*" value="3" commMode="NULL" />
+      <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">$ vezes 3 é = a #multiplicando </talk>
+      <counter var="multiplicando" op="/" value="3" commMode="NULL" />
+      <counter var="multiplicando" op="*" value="4" commMode="NULL" />
+      <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">$ vezes 4 é = a #multiplicando </talk>
+      <counter var="multiplicando" op="/" value="4" commMode="NULL" />
+      <counter var="multiplicando" op="*" value="5" commMode="NULL" />
+      <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">$ vezes 5  é = a #multiplicando </talk>
+      <counter var="multiplicando" op="/" value="5" commMode="NULL" />
+      <counter var="multiplicando" op="*" value="6" commMode="NULL" />
+      <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">$ vezes 6 é = a #multiplicando </talk>
+      <counter var="multiplicando" op="/" value="6" commMode="NULL" />
+      <counter var="multiplicando" op="*" value="7" commMode="NULL" />
+      <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">$ vezes 7 é = a #multiplicando </talk>
+      <counter var="multiplicando" op="/" value="7" commMode="NULL" />
+      <counter var="multiplicando" op="*" value="8" commMode="NULL" />
+      <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">$ vezes 8 é = a #multiplicando </talk>
+      <counter var="multiplicando" op="/" value="8" commMode="NULL" />
+      <counter var="multiplicando" op="*" value="9" commMode="NULL" />
+      <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">$ vezes 9 é = a #multiplicando </talk>
+      <counter var="multiplicando" op="/" value="9" commMode="NULL" />
+      <counter var="multiplicando" op="*" value="10" commMode="NULL" />
+      <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">$ vezes 10 é = a #multiplicando </talk>
+    </macro>
+    <macro id="Fixa_dolar" commMode="NULL">
+      <random min="1" max="1" commMode="NULL" />
+      <random min="2" max="2" commMode="NULL" />
+      <random min="3" max="3" commMode="NULL" />
+      <random min="4" max="4" commMode="NULL" />
+      <random min="5" max="5" commMode="NULL" />
+      <random min="6" max="6" commMode="NULL" />
+      <random min="7" max="7" commMode="NULL" />
+      <random min="8" max="8" commMode="NULL" />
+      <random min="9" max="9" commMode="NULL" />
+      <random min="10" max="10" commMode="NULL" />
+      <debug operation="SHOW_DOLLAR_VAR" commMode="NULL" />
+      <debug operation="PAUSE" commMode="NULL" />
+    </macro>
+    <macro id="Multiplicando" commMode="NULL">
+      <random min="1" max="10" commMode="NULL" />
+      <switch var="$" commMode="NULL">
+        <case op="exact" value="1" commMode="NULL">
+          <counter var="multiplicando" op="=" value="1" commMode="NULL" />
+        </case>
+        <case op="exact" value="2" commMode="NULL">
+          <counter var="multiplicando" op="=" value="2" commMode="NULL" />
+        </case>
+        <case op="exact" value="3" commMode="NULL">
+          <counter var="multiplicando" op="=" value="3" commMode="NULL" />
+        </case>
+        <case op="exact" value="4" commMode="NULL">
+          <counter var="multiplicando" op="=" value="4" commMode="NULL" />
+        </case>
+        <case op="exact" value="5" commMode="NULL">
+          <counter var="multiplicando" op="=" value="5" commMode="NULL" />
+        </case>
+        <case op="exact" value="6" commMode="NULL">
+          <counter var="multiplicando" op="=" value="6" commMode="NULL" />
+        </case>
+        <case op="exact" value="7" commMode="NULL">
+          <counter var="multiplicando" op="=" value="7" commMode="NULL" />
+        </case>
+        <case op="exact" value="8" commMode="NULL">
+          <counter var="multiplicando" op="=" value="8" commMode="NULL" />
+        </case>
+        <case op="exact" value="9" commMode="NULL">
+          <counter var="multiplicando" op="=" value="9" commMode="NULL" />
+        </case>
+        <case op="exact" value="10" commMode="NULL">
+          <counter var="multiplicando" op="=" value="10" commMode="NULL" />
+        </case>
+      </switch>
+    </macro>
+    <macro id="nível_1" commMode="NULL">
+        <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Quanto é #multiplicando vezes $?</talk>
+        <switch var="$" commMode="NULL">
+            <case op="exact" value="1" commMode="NULL">
+                <counter var="multiplicando" op="*" value="1" commMode="NULL" />
+            </case>
+            <case op="exact" value="2" commMode="NULL">
+                <counter var="multiplicando" op="*" value="2" commMode="NULL" />
+            </case>
+            <case op="exact" value="3" commMode="NULL">
+                <counter var="multiplicando" op="*" value="3" commMode="NULL" />
+            </case>
+            <case op="exact" value="4" commMode="NULL">
+                <counter var="multiplicando" op="*" value="4" commMode="NULL" />
+            </case>
+            <case op="exact" value="5" commMode="NULL">
+                <counter var="multiplicando" op="*" value="5" commMode="NULL" />
+            </case>
+            <case op="exact" value="6" commMode="NULL">
+                <counter var="multiplicando" op="*" value="6" commMode="NULL" />
+            </case>
+            <case op="exact" value="7" commMode="NULL">
+                <counter var="multiplicando" op="*" value="7" commMode="NULL" />
+            </case>
+            <case op="exact" value="8" commMode="NULL">
+                <counter var="multiplicando" op="*" value="8" commMode="NULL" />
+            </case>
+            <case op="exact" value="9" commMode="NULL">
+                <counter var="multiplicando" op="*" value="9" commMode="NULL" />
+            </case>
+            <case op="exact" value="10" commMode="NULL">
+                <counter var="multiplicando" op="*" value="10" commMode="NULL" />
+            </case>
+        </switch>
+        <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+        <switch var="$" commMode="NULL">
+          <case op="exact" value="parar" commMode="NULL">
+            <useMacro macro="final" commMode="NULL" />
+            <stop commMode="NULL" />
+          </case>
+            <case op="eq" value="#multiplicando" commMode="NULL">
+                <useMacro macro="Pontuou" commMode="NULL" />
+            </case>
+            <default commMode="NULL">
+                <useMacro macro="Não_pontuou" commMode="NULL" />
+            </default>
+        </switch>
+    </macro>
+    <macro id="Pontuou" commMode="NULL">
+      <evaEmotion emotion="HAPPY" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+      <led animation="HAPPY" commMode="MQTT_PUB" pubTopic="LEDS" />
+      <motion type="2UP_RIGHT" rightArm="UP" leftArm="DOWN" commMode="MQTT_PUB" pubTopic="MOTION" />
+      <random min="1" max="3" commMode="NULL" />
+      <switch var="$" commMode="NULL">
+        <case op="exact" value="1" commMode="NULL">
+          <light state="ON" color="GREEN" commMode="MQTT_PUB" pubTopic="LIGHT" />
+          <useMacro macro="Pont_total" commMode="NULL" />
+        </case>
+        <case op="exact" value="2" commMode="NULL">
+          <light state="ON" color="BLUE" commMode="MQTT_PUB" pubTopic="LIGHT" />
+          <useMacro macro="Pont_total" commMode="NULL" />
+        </case>
+        <case op="exact" value="3" commMode="NULL">
+          <light state="ON" color="PINK" commMode="MQTT_PUB" pubTopic="LIGHT" />
+          <useMacro macro="Pont_total" commMode="NULL" />
+        </case>
+      </switch>
+      <audio source="efx-aplausos-bom" block="TRUE" commMode="MQTT_PUB_SUB" pubTopic="AUDIO" subTopic="AUDIO_RESPONSE" />
+      <counter var="ponto" op="+" value="1" commMode="NULL" />
+      <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Parabéns, voce ganhou um ponto </talk>
+      <evaEmotion emotion="NEUTRAL" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+      <light state="ON" color="WHITE" commMode="MQTT_PUB" pubTopic="LIGHT" />
+      <motion type="CENTER" leftArm="POSITION 0" rightArm="POSITION 0" commMode="MQTT_PUB" pubTopic="MOTION" />
+    </macro>
+    <macro id="Não_pontuou" commMode="NULL">
+      <evaEmotion emotion="SAD" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+      <random min="1" max="3" commMode="NULL" />
+      <switch var="$" commMode="NULL">
+        <case op="exact" value="1" commMode="NULL">
+          <light state="ON" color="RED" commMode="MQTT_PUB" pubTopic="LIGHT" />
+        </case>
+        <case op="exact" value="2" commMode="NULL">
+          <light state="ON" color="YELLOW" commMode="MQTT_PUB" pubTopic="LIGHT" />
+        </case>
+        <case op="exact" value="3" commMode="NULL">
+          <light state="ON" color="BLACK" commMode="MQTT_PUB" pubTopic="LIGHT" />
+        </case>
+      </switch>
+      <motion type="NO" leftArm="UP" rightArm="UP" commMode="MQTT_PUB" pubTopic="MOTION" />
+      <led animation="SAD" commMode="MQTT_PUB" pubTopic="LEDS" />
+      <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">A resposta dessa operação é #multiplicando</talk>
+      <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Que pena, dessa vez você não pontuou, vamos para a próxima</talk>
+      <light state="ON" color="WHITE" commMode="MQTT_PUB" pubTopic="LIGHT" />
+      <evaEmotion emotion="NEUTRAL" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+      <motion leftArm="POSITION 0" rightArm="POSITION 0" commMode="MQTT_PUB" pubTopic="MOTION" />
+    </macro>
+    <macro id="materiais" commMode="NULL">
+      <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Ana tem #multiplicando caixas de canetas.  Cada caixa contém $ canetas.    Quantas canetas no total tem Ana? / 
+        Na escola de Alice existem #multiplicando salas de aula, e em cada uma existem $ cadeiras. Quantas cadeiras existem na escola de Alice? /
+        João comprou #multiplicando brigadeiros. Cada brigadeiro custa $ reais.        Quanto João pagou nos brigadeiros? /
+        Renan tem #multiplicando sacos com $ balas em cada um. Quantas balas há em todos os sacos? /
+        Na mesa da professora há #multiplicando gavetas com $ livros cada.   Quantos livros há na mesa da professora?
+      </talk>
+    </macro>
+    <macro id="nível_2" commMode="NULL">
+      <random min="2" max="10" commMode="NULL" />
+      <switch var="$" commMode="NULL">
+        <case op="exact" value="2" commMode="NULL">
+          <useMacro macro="materiais" commMode="NULL" />
+          <counter var="multiplicando" op="*" value="2" commMode="NULL" />
+          <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+          <switch var="$" commMode="NULL">
+            <case op="exact" value="parar" commMode="NULL">
+              <useMacro macro="final" commMode="NULL" />
+              <stop commMode="NULL" />
+            </case>
+            <case op="eq" value="#multiplicando" commMode="NULL">
+              <useMacro macro="Pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="2" commMode="NULL" />
+            </case>
+            <default commMode="NULL">
+              <useMacro macro="Não_pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="2" commMode="NULL" />
+            </default>
+          </switch>
+        </case>
+        <case op="exact" value="3" commMode="NULL">
+          <useMacro macro="materiais" commMode="NULL" />
+          <counter var="multiplicando" op="*" value="3" commMode="NULL" />
+          <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+          <switch var="$" commMode="NULL">
+            <case op="exact" value="parar" commMode="NULL">
+              <useMacro macro="final" commMode="NULL" />
+              <stop commMode="NULL" />
+            </case>
+            <case op="eq" value="#multiplicando" commMode="NULL">
+              <useMacro macro="Pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="3" commMode="NULL" />
+            </case>
+            <default commMode="NULL">
+              <useMacro macro="Não_pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="3" commMode="NULL" />
+            </default>
+          </switch>
+        </case>
+        <case op="exact" value="4" commMode="NULL">
+          <useMacro macro="materiais" commMode="NULL" />
+          <counter var="multiplicando" op="*" value="4" commMode="NULL" />
+          <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+          <switch var="$" commMode="NULL">
+            <case op="exact" value="parar" commMode="NULL">
+              <useMacro macro="final" commMode="NULL" />
+              <stop commMode="NULL" />
+            </case>
+            <case op="eq" value="#multiplicando" commMode="NULL">
+              <useMacro macro="Pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="4" commMode="NULL" />
+            </case>
+            <default commMode="NULL">
+              <useMacro macro="Não_pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="4" commMode="NULL" />
+            </default>
+          </switch>
+        </case>
+        <case op="exact" value="5" commMode="NULL">
+          <useMacro macro="materiais" commMode="NULL" />
+          <counter var="multiplicando" op="*" value="5" commMode="NULL" />
+          <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+          <switch var="$" commMode="NULL">
+            <case op="exact" value="parar" commMode="NULL">
+              <useMacro macro="final" commMode="NULL" />
+              <stop commMode="NULL" />
+            </case>
+            <case op="eq" value="#multiplicando" commMode="NULL">
+              <useMacro macro="Pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="5" commMode="NULL" />
+            </case>
+            <default commMode="NULL">
+              <useMacro macro="Não_pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="5" commMode="NULL" />
+            </default>
+          </switch>
+        </case>
+        <case op="exact" value="6" commMode="NULL">
+          <useMacro macro="materiais" commMode="NULL" />
+          <counter var="multiplicando" op="*" value="6" commMode="NULL" />
+          <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+          <switch var="$" commMode="NULL">
+            <case op="exact" value="parar" commMode="NULL">
+              <useMacro macro="final" commMode="NULL" />
+              <stop commMode="NULL" />
+            </case>
+            <case op="eq" value="#multiplicando" commMode="NULL">
+              <useMacro macro="Pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="6" commMode="NULL" />
+            </case>
+            <default commMode="NULL">
+              <useMacro macro="Não_pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="6" commMode="NULL" />
+            </default>
+          </switch>
+        </case>
+        <case op="exact" value="7" commMode="NULL">
+          <useMacro macro="materiais" commMode="NULL" />
+          <counter var="multiplicando" op="*" value="7" commMode="NULL" />
+          <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+          <switch var="$" commMode="NULL">
+            <case op="exact" value="parar" commMode="NULL">
+              <useMacro macro="final" commMode="NULL" />
+              <stop commMode="NULL" />
+            </case>
+            <case op="eq" value="#multiplicando" commMode="NULL">
+              <useMacro macro="Pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="7" commMode="NULL" />
+            </case>
+            <default commMode="NULL">
+              <useMacro macro="Não_pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="7" commMode="NULL" />
+            </default>
+          </switch>
+        </case>
+        <case op="exact" value="8" commMode="NULL">
+          <useMacro macro="materiais" commMode="NULL" />
+          <counter var="multiplicando" op="*" value="8" commMode="NULL" />
+          <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+          <switch var="$" commMode="NULL">
+            <case op="exact" value="parar" commMode="NULL">
+              <useMacro macro="final" commMode="NULL" />
+              <stop commMode="NULL" />
+            </case>
+            <case op="eq" value="#multiplicando" commMode="NULL">
+              <useMacro macro="Pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="8" commMode="NULL" />
+            </case>
+            <default commMode="NULL">
+              <useMacro macro="Não_pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="8" commMode="NULL" />
+            </default>
+          </switch>
+        </case>
+        <case op="exact" value="9" commMode="NULL">
+          <useMacro macro="materiais" commMode="NULL" />
+          <counter var="multiplicando" op="*" value="9" commMode="NULL" />
+          <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+          <switch var="$" commMode="NULL">
+            <case op="exact" value="parar" commMode="NULL">
+              <useMacro macro="final" commMode="NULL" />
+              <stop commMode="NULL" />
+            </case>
+            <case op="eq" value="#multiplicando" commMode="NULL">
+              <useMacro macro="Pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="9" commMode="NULL" />
+            </case>
+            <default commMode="NULL">
+              <useMacro macro="Não_pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="9" commMode="NULL" />
+            </default>
+          </switch>
+        </case>
+        <case op="exact" value="10" commMode="NULL">
+          <useMacro macro="materiais" commMode="NULL" />
+          <counter var="multiplicando" op="*" value="10" commMode="NULL" />
+          <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+          <switch var="$" commMode="NULL">
+            <case op="exact" value="parar" commMode="NULL">
+              <useMacro macro="final" commMode="NULL" />
+              <stop commMode="NULL" />
+            </case>
+            <case op="eq" value="#multiplicando" commMode="NULL">
+              <useMacro macro="Pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="10" commMode="NULL" />
+            </case>
+            <default commMode="NULL">
+              <useMacro macro="Não_pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="10" commMode="NULL" />
+            </default>
+          </switch>
+        </case>
+      </switch>
+    </macro>
+    <macro id="problemas" commMode="NULL">
+      <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Um jogador comprou #multiplicando blusas que custam $ reais cada uma. Quanto ele gastou em blusas?/
+        Um caixote tem #multiplicando maçãs. Quantas maçãs terão $ caixotes?/
+        Marcelo estocou #multiplicando caixas contendo $ tubos de cola em cada  caixa. Quantos tubos Marcelo estocou?/
+        Joana precisa encher #multiplicando copos de $ ml com refrigerante. Qual a quantidade total de refrigerante de que ele precisará? /
+        Ana Carolina usa #multiplicando novelos de lã para fazer uma blusa.  Quantos novelos de lã Ana precisará para fazer $ blusas?/
+        Na fazenda de José tem #multiplicando vacas leiteiras. Cada vaca produz $ litros de leite. Quantos litros de leite são produzidos no total?/
+        Para fazer um bolo são necessários #multiplicando ovos. Quantos ovos serão necessários para fazer $ bolos?/
+        Bruna comprou #multiplicando caixas de morango para vender. Cada  caixa contém $ morangos. Quantos morangos Bruna comprou?
+      </talk>
+    </macro>
+    <macro id="nível_3" commMode="NULL">
+      <random min="4" max="10" commMode="NULL" />
+      <switch var="$" commMode="NULL">
+        <case op="exact" value="1" commMode="NULL">
+          <useMacro macro="problemas" commMode="NULL" />
+          <counter var="multiplicando" op="*" value="1" commMode="NULL" />
+          <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+          <switch var="$" commMode="NULL">
+            <case op="exact" value="parar" commMode="NULL">
+              <useMacro macro="final" commMode="NULL" />
+              <stop commMode="NULL" />
+            </case>
+            <case op="eq" value="#multiplicando" commMode="NULL">
+              <useMacro macro="Pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="1" commMode="NULL" />
+            </case>
+            <default commMode="NULL">
+              <useMacro macro="Não_pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="1" commMode="NULL" />
+            </default>
+          </switch>
+        </case>
+        <case op="exact" value="2" commMode="NULL">
+          <useMacro macro="problemas" commMode="NULL" />
+          <counter var="multiplicando" op="*" value="2" commMode="NULL" />
+          <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+          <switch var="$" commMode="NULL">
+            <case op="exact" value="parar" commMode="NULL">
+              <useMacro macro="final" commMode="NULL" />
+              <stop commMode="NULL" />
+            </case>
+            <case op="eq" value="#multiplicando" commMode="NULL">
+              <useMacro macro="Pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="2" commMode="NULL" />
+            </case>
+            <default commMode="NULL">
+              <useMacro macro="Não_pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="2" commMode="NULL" />
+            </default>
+          </switch>
+        </case>
+        <case op="exact" value="3" commMode="NULL">
+          <useMacro macro="problemas" commMode="NULL" />
+          <counter var="multiplicando" op="*" value="3" commMode="NULL" />
+          <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+          <switch var="$" commMode="NULL">
+            <case op="exact" value="parar" commMode="NULL">
+              <useMacro macro="final" commMode="NULL" />
+              <stop commMode="NULL" />
+            </case>
+            <case op="eq" value="#multiplicando" commMode="NULL">
+              <useMacro macro="Pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="3" commMode="NULL" />
+            </case>
+            <default commMode="NULL">
+              <useMacro macro="Não_pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="3" commMode="NULL" />
+            </default>
+          </switch>
+        </case>
+        <case op="exact" value="4" commMode="NULL">
+          <useMacro macro="problemas" commMode="NULL" />
+          <counter var="multiplicando" op="*" value="4" commMode="NULL" />
+          <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+          <switch var="$" commMode="NULL">
+            <case op="exact" value="parar" commMode="NULL">
+              <useMacro macro="final" commMode="NULL" />
+              <stop commMode="NULL" />
+            </case>
+            <case op="eq" value="#multiplicando" commMode="NULL">
+              <useMacro macro="Pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="4" commMode="NULL" />
+            </case>
+            <default commMode="NULL">
+              <useMacro macro="Não_pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="4" commMode="NULL" />
+            </default>
+          </switch>
+        </case>
+        <case op="exact" value="5" commMode="NULL">
+          <useMacro macro="problemas" commMode="NULL" />
+          <counter var="multiplicando" op="*" value="5" commMode="NULL" />
+          <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+          <switch var="$" commMode="NULL">
+            <case op="exact" value="parar" commMode="NULL">
+              <useMacro macro="final" commMode="NULL" />
+              <stop commMode="NULL" />
+            </case>
+            <case op="eq" value="#multiplicando" commMode="NULL">
+              <useMacro macro="Pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="5" commMode="NULL" />
+            </case>
+            <default commMode="NULL">
+              <useMacro macro="Não_pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="5" commMode="NULL" />
+            </default>
+          </switch>
+        </case>
+        <case op="exact" value="6" commMode="NULL">
+          <useMacro macro="problemas" commMode="NULL" />
+          <counter var="multiplicando" op="*" value="6" commMode="NULL" />
+          <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+          <switch var="$" commMode="NULL">
+            <case op="exact" value="parar" commMode="NULL">
+              <useMacro macro="final" commMode="NULL" />
+              <stop commMode="NULL" />
+            </case>
+            <case op="eq" value="#multiplicando" commMode="NULL">
+              <useMacro macro="Pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="6" commMode="NULL" />
+            </case>
+            <default commMode="NULL">
+              <useMacro macro="Não_pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="6" commMode="NULL" />
+            </default>
+          </switch>
+        </case>
+        <case op="exact" value="7" commMode="NULL">
+          <useMacro macro="problemas" commMode="NULL" />
+          <counter var="multiplicando" op="*" value="7" commMode="NULL" />
+          <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+          <switch var="$" commMode="NULL">
+            <case op="exact" value="parar" commMode="NULL">
+              <useMacro macro="final" commMode="NULL" />
+              <stop commMode="NULL" />
+            </case>
+            <case op="eq" value="#multiplicando" commMode="NULL">
+              <useMacro macro="Pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="7" commMode="NULL" />
+            </case>
+            <default commMode="NULL">
+              <useMacro macro="Não_pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="7" commMode="NULL" />
+            </default>
+          </switch>
+        </case>
+        <case op="exact" value="8" commMode="NULL">
+          <useMacro macro="problemas" commMode="NULL" />
+          <counter var="multiplicando" op="*" value="8" commMode="NULL" />
+          <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+          <switch var="$" commMode="NULL">
+            <case op="exact" value="parar" commMode="NULL">
+              <useMacro macro="final" commMode="NULL" />
+              <stop commMode="NULL" />
+            </case>
+            <case op="eq" value="#multiplicando" commMode="NULL">
+              <useMacro macro="Pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="8" commMode="NULL" />
+            </case>
+            <default commMode="NULL">
+              <useMacro macro="Não_pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="8" commMode="NULL" />
+            </default>
+          </switch>
+        </case>
+        <case op="exact" value="9" commMode="NULL">
+          <useMacro macro="problemas" commMode="NULL" />
+          <counter var="multiplicando" op="*" value="9" commMode="NULL" />
+          <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+          <switch var="$" commMode="NULL">
+            <case op="exact" value="parar" commMode="NULL">
+              <useMacro macro="final" commMode="NULL" />
+              <stop commMode="NULL" />
+            </case>
+            <case op="eq" value="#multiplicando" commMode="NULL">
+              <useMacro macro="Pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="9" commMode="NULL" />
+            </case>
+            <default commMode="NULL">
+              <useMacro macro="Não_pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="9" commMode="NULL" />
+            </default>
+          </switch>
+        </case>
+        <case op="exact" value="10" commMode="NULL">
+          <useMacro macro="problemas" commMode="NULL" />
+          <counter var="multiplicando" op="*" value="10" commMode="NULL" />
+          <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+          <switch var="$" commMode="NULL">
+            <case op="exact" value="parar" commMode="NULL">
+              <useMacro macro="final" commMode="NULL" />
+              <stop commMode="NULL" />
+            </case>
+            <case op="eq" value="#multiplicando" commMode="NULL">
+              <useMacro macro="Pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="10" commMode="NULL" />
+            </case>
+            <default commMode="NULL">
+              <useMacro macro="Não_pontuou" commMode="NULL" />
+              <counter var="multiplicando" op="/" value="10" commMode="NULL" />
+            </default>
+          </switch>
+        </case>
+      </switch>
+    </macro>
+    <macro id="Multiplicando_2" commMode="NULL">
+      <random min="3" max="10" commMode="NULL" />
+      <switch var="$" commMode="NULL">
+        <case op="exact" value="3" commMode="NULL">
+          <counter var="multiplicando" op="=" value="3" commMode="NULL" />
+        </case>
+        <case op="exact" value="4" commMode="NULL">
+          <counter var="multiplicando" op="=" value="4" commMode="NULL" />
+        </case>
+        <case op="exact" value="5" commMode="NULL">
+          <counter var="multiplicando" op="=" value="5" commMode="NULL" />
+        </case>
+        <case op="exact" value="6" commMode="NULL">
+          <counter var="multiplicando" op="=" value="6" commMode="NULL" />
+        </case>
+        <case op="exact" value="7" commMode="NULL">
+          <counter var="multiplicando" op="=" value="7" commMode="NULL" />
+        </case>
+        <case op="exact" value="8" commMode="NULL">
+          <counter var="multiplicando" op="=" value="8" commMode="NULL" />
+        </case>
+        <case op="exact" value="9" commMode="NULL">
+          <counter var="multiplicando" op="=" value="9" commMode="NULL" />
+        </case>
+        <case op="exact" value="10" commMode="NULL">
+          <counter var="multiplicando" op="=" value="10" commMode="NULL" />
+        </case>
+      </switch>
+    </macro>
+    <macro id="Regras" commMode="NULL">
+      <audio source="efx-mario-start-02" block="TRUE" commMode="MQTT_PUB_SUB" pubTopic="AUDIO" subTopic="AUDIO_RESPONSE" />
+      <light state="ON" color="RED" commMode="MQTT_PUB" pubTopic="LIGHT" />
+      <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE"> $1, o jogo da tabuada funciona da seguinte maneira.</talk>
+      <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Cada pergunta terá uma pontuação e seu objetivo final é conseguir acertar todas as perguntas, totalizando 9 pontos. 
+        Caso já inicie em um nível avançado, todos os pontos dos níveis anteriores ja serão automaticamente conquistados por você.</talk>
+      <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Ao final de cada nível farei uma pergunta para saber se quer jogar mais ou se quer parar. Ao fim de tudo, direi sua pontuação final. Espero que você goste do jogo!</talk>
+      <light state="ON" color="WHITE" commMode="MQTT_PUB" pubTopic="LIGHT" />
+      <evaEmotion emotion="NEUTRAL" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+    </macro>
+    <macro id="Apresenta" commMode="NULL">
+      <audio source="efx-mario-game-intro" block="TRUE" commMode="MQTT_PUB_SUB" pubTopic="AUDIO" subTopic="AUDIO_RESPONSE" />
+      <evaEmotion emotion="HAPPY" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+      <light state="ON" color="YELLOW" commMode="MQTT_PUB" pubTopic="LIGHT" />
+      <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Olá, eu sou robô Eva. E você? Qual é o seu nome?</talk>
+      <evaEmotion emotion="NEUTRAL" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+      <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+      <light state="ON" color="GREEN" commMode="MQTT_PUB" pubTopic="LIGHT" />
+    </macro>
+    <macro id="final" commMode="NULL">
+      <evaEmotion emotion="HAPPY" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+      <motion type="2UP_LEFT" leftArm="SHAKE1" rightArm="SHAKE1" commMode="MQTT_PUB" pubTopic="MOTION" />
+      <led animation="RAINBOW" commMode="MQTT_PUB" pubTopic="LEDS" />
+      <audio source="efx-mario-end-03" block="TRUE" commMode="MQTT_PUB_SUB" pubTopic="AUDIO" subTopic="AUDIO_RESPONSE" />
+      <light state="ON" color="BLACK" commMode="MQTT_PUB" pubTopic="LIGHT" />
+      <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">$1, então encerramos por aqui a nossa sessão. Você conseguiu um total de #pontos pontos. Tôrço para que tenha gostado da experiência de ter jogado comigo. Estarei te esperando para jogarmos em outro momento.</talk>
+      <motion type="CENTER" leftArm="POSITION 0" rightArm="POSITION 0" commMode="MQTT_PUB" pubTopic="MOTION" />
+    </macro>
+    <macro id="Nivelamento_3" commMode="NULL">
+        <random min="6" max="9" commMode="NULL" />
+        <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Para fazer um bolo são necessários #multiplicando ovos. Quantos ovos serão necessários para fazer $ bolos?/
+            Bruna comprou #multiplicando caixas de morango para vender, em cada caixa há $ morangos. Quantos morangos ela comprou?</talk>
+            <switch var="$" commMode="NULL">
+                <case op="exact" value="1" commMode="NULL">
+                    <counter var="multiplicando" op="*" value="1" commMode="NULL" />
+                </case>
+                <case op="exact" value="2" commMode="NULL">
+                    <counter var="multiplicando" op="*" value="2" commMode="NULL" />
+                </case>
+                <case op="exact" value="3" commMode="NULL">
+                    <counter var="multiplicando" op="*" value="3" commMode="NULL" />
+                </case>
+                <case op="exact" value="4" commMode="NULL">
+                    <counter var="multiplicando" op="*" value="4" commMode="NULL" />
+                </case>
+                <case op="exact" value="5" commMode="NULL">
+                    <counter var="multiplicando" op="*" value="5" commMode="NULL" />
+                </case>
+                <case op="exact" value="6" commMode="NULL">
+                    <counter var="multiplicando" op="*" value="6" commMode="NULL" />
+                </case>
+                <case op="exact" value="7" commMode="NULL">
+                    <counter var="multiplicando" op="*" value="7" commMode="NULL" />
+                </case>
+                <case op="exact" value="8" commMode="NULL">
+                    <counter var="multiplicando" op="*" value="8" commMode="NULL" />
+                </case>
+                <case op="exact" value="9" commMode="NULL">
+                    <counter var="multiplicando" op="*" value="9" commMode="NULL" />
+                </case>
+                <case op="exact" value="10" commMode="NULL">
+                    <counter var="multiplicando" op="*" value="10" commMode="NULL" />
+                </case>
+            </switch>
+            <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+            <switch var="$" commMode="NULL">
+                <case op="eq" value="#multiplicando" commMode="NULL">
+                  <counter var="pont_min" op="+" value="15" commMode="NULL" />
+                  <audio source="successed" block="TRUE" commMode="MQTT_PUB_SUB" pubTopic="AUDIO" subTopic="AUDIO_RESPONSE" />
+                  <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Parabéns!</talk>
+                </case>
+                <default commMode="NULL">
+                  <audio source="negative_beep" block="TRUE" commMode="MQTT_PUB_SUB" pubTopic="AUDIO" subTopic="AUDIO_RESPONSE" />
+                  <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">A resposta certa é #multiplicando. Vamos para a próxima, esta foi por pouco.</talk>
+                </default>
+            </switch>
+    </macro>
+    <macro id="Nivelamento_2" commMode="NULL">
+        <random min="2" max="5" commMode="NULL" />
+        <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Em um pote cabem #multiplicando canetas.      Quantas canetas serão necessárias para colocarmos em $ potes? /
+            Uma sala possui #multiplicando computadores com $ telas.    Quantas telas existem nesta sala?
+        </talk>
+        <switch var="$" commMode="NULL">
+            <case op="exact" value="1" commMode="NULL">
+                <counter var="multiplicando" op="*" value="1" commMode="NULL" />
+            </case>
+            <case op="exact" value="2" commMode="NULL">
+                <counter var="multiplicando" op="*" value="2" commMode="NULL" />
+            </case>
+            <case op="exact" value="3" commMode="NULL">
+                <counter var="multiplicando" op="*" value="3" commMode="NULL" />
+            </case>
+            <case op="exact" value="4" commMode="NULL">
+                <counter var="multiplicando" op="*" value="4" commMode="NULL" />
+            </case>
+            <case op="exact" value="5" commMode="NULL">
+                <counter var="multiplicando" op="*" value="5" commMode="NULL" />
+            </case>
+            <case op="exact" value="6" commMode="NULL">
+                <counter var="multiplicando" op="*" value="6" commMode="NULL" />
+            </case>
+            <case op="exact" value="7" commMode="NULL">
+                <counter var="multiplicando" op="*" value="7" commMode="NULL" />
+            </case>
+            <case op="exact" value="8" commMode="NULL">
+                <counter var="multiplicando" op="*" value="8" commMode="NULL" />
+            </case>
+            <case op="exact" value="9" commMode="NULL">
+                <counter var="multiplicando" op="*" value="9" commMode="NULL" />
+            </case>
+            <case op="exact" value="10" commMode="NULL">
+                <counter var="multiplicando" op="*" value="10" commMode="NULL" />
+            </case>
+        </switch>
+        <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+        <switch var="$" commMode="NULL">
+            <case op="eq" value="#multiplicando" commMode="NULL">
+                <counter var="pont_min" op="+" value="3" commMode="NULL" />
+                <audio source="successed" block="TRUE" commMode="MQTT_PUB_SUB" pubTopic="AUDIO" subTopic="AUDIO_RESPONSE" />
+                <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Parabéns!</talk>
+            </case>
+            <default commMode="NULL">
+                <audio source="negative_beep" block="TRUE" commMode="MQTT_PUB_SUB" pubTopic="AUDIO" subTopic="AUDIO_RESPONSE" />
+                <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">A resposta certa é #multiplicando.       Vamos para a próxima, esta foi por pouco.</talk>
+            </default>
+        </switch>
+    </macro>
+    <macro id="Nivelamento" commMode="NULL">
+        <random min="2" max="10" commMode="NULL" />
+        <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Quanto é #multiplicando vezes $?</talk>
+        <switch var="$" commMode="NULL">
+            <case op="exact" value="1" commMode="NULL">
+                <counter var="multiplicando" op="*" value="1" commMode="NULL" />
+            </case>
+            <case op="exact" value="2" commMode="NULL">
+                <counter var="multiplicando" op="*" value="2" commMode="NULL" />
+            </case>
+            <case op="exact" value="3" commMode="NULL">
+                <counter var="multiplicando" op="*" value="3" commMode="NULL" />
+            </case>
+            <case op="exact" value="4" commMode="NULL">
+                <counter var="multiplicando" op="*" value="4" commMode="NULL" />
+            </case>
+            <case op="exact" value="5" commMode="NULL">
+                <counter var="multiplicando" op="*" value="5" commMode="NULL" />
+            </case>
+            <case op="exact" value="6" commMode="NULL">
+                <counter var="multiplicando" op="*" value="6" commMode="NULL" />
+            </case>
+            <case op="exact" value="7" commMode="NULL">
+                <counter var="multiplicando" op="*" value="7" commMode="NULL" />
+            </case>
+            <case op="exact" value="8" commMode="NULL">
+                <counter var="multiplicando" op="*" value="8" commMode="NULL" />
+            </case>
+            <case op="exact" value="9" commMode="NULL">
+                <counter var="multiplicando" op="*" value="9" commMode="NULL" />
+            </case>
+            <case op="exact" value="10" commMode="NULL">
+                <counter var="multiplicando" op="*" value="10" commMode="NULL" />
+            </case>
+        </switch>
+        <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+        <switch var="$" commMode="NULL">
+            <case op="eq" value="#multiplicando" commMode="NULL">
+                <counter var="pont_min" op="+" value="1" commMode="NULL" />
+                <audio source="successed" block="TRUE" commMode="MQTT_PUB_SUB" pubTopic="AUDIO" subTopic="AUDIO_RESPONSE" />
+                <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Parabéns!</talk>
+            </case>
+            <default commMode="NULL">
+                <audio source="negative_beep" block="TRUE" commMode="MQTT_PUB_SUB" pubTopic="AUDIO" subTopic="AUDIO_RESPONSE" />
+                <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">A resposta certa é #multiplicando.       Vamos para a próxima, esta foi por pouco.</talk>
+            </default>
+        </switch>
+    </macro>
+  </macros>
+</evaml>

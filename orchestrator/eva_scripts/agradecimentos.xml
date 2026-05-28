@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<evaml
+  name="agradecimentos"
+  xsi:noNamespaceSchemaLocation="../robot_package/xml_schema/evaml_schema.xsd"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <settings>
+    <voice type="pt_BR-faber-medium" pitchShift="8"/>
+    <lightEffects mode="ON" />
+    <audioEffects mode="ON" />
+  </settings>
+  <script>
+    <light state="ON" color="BLUE"/>
+    <motion head="CENTER" rightArm="POSITION 0" leftArm="POSITION 3"/>
+    <evaEmotion emotion="NEUTRAL" />
+    <audio source="efx-blin2" block="TRUE" />
+    <talk>Sejam bem vindos!</talk>
+    <talk>Eu sou o robô social Eva</talk>
+    <talk>Sou um robô destinado a aplicações em saúde e educação</talk>
+    <motion rightArm="POSITION 3" leftArm="POSITION 0"/>
+    <talk>Gostaria de agradecer aos responsáveis por permitirem que essas meninas super poderosas participassem do meu teste</talk>
+    <light state="ON" color="GREEN" />
+    <evaEmotion emotion="HAPPY" />
+    <motion head="UP" />
+    <talk>Muito obrigado a todos!</talk>
+    <light state="ON" color="YELLOW" />
+    <led animation="SURPRISE" />
+    <audio source="song-aquarela" block="FALSE" />
+    <motion head="2NO" rightArm="SHAKE2" />
+    <wait duration="6000" />
+    <motion head="2NO" />
+    <motion rightArm="SHAKE2"/>
+    <wait duration="7000" />
+    <motion leftArm="POSITION 0"/>
+    <wait duration="2000" />
+    <led animation="STOP" />
+    <evaEmotion emotion="NEUTRAL" />
+    <motion head="CENTER" rightArm="POSITION 0" />
+  </script>
+</evaml>

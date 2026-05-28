@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<evaml
+  name="pcb2"
+  xsi:noNamespaceSchemaLocation="../robot_package/xml_schema/evaml_schema.xsd"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  
+  <settings>
+    <voice type="pt-BR_IsabelaV3Voice" />
+    <lightEffects mode="ON" />
+    <audioEffects mode="ON" />
+  </settings>
+  <script>
+    <evaEmotion emotion="NEUTRAL" />
+    <talk>Olá, que bom te ver. Eu sou o EVA, um robô social e irei te mostrar algumas das minhas habilidades.</talk>
+    <talk>Antes de começarmos, eu gostaria de saber o seu nome. Por favor, responda apenas seu nome.</talk>
+    <listen var="nome"/>
+    <evaEmotion emotion="HAPPY" />
+    <wait duration="1000" />
+    <motion head="YES"/>
+    <talk>Muito prazer, #nome!</talk>
+    <talk>Vamos começar!</talk>
+    <evaEmotion emotion="NEUTRAL" />
+    <led animation="SURPRISE" id="volt"/>
+    <talk>Mostre um cartão com a emoção que você está sentindo agora.</talk>
+    <qrRead var="emocao"/>
+    <switch var="emocao">
+        <case op="exact" value="feliz">
+            <evaEmotion emotion="HAPPY" />
+            <motion head="YES"/>
+            <audio source="song-take-on-me" block="TRUE" />
+            <talk>Felicidade detectada! Parece que você acordou com o pé direito hoje. Eu fico assim quando encontro Wi-Fi rápido.</talk>
+            <led animation="HAPPY" />
+        </case>
+        <case op="exact" value="triste">
+            <evaEmotion emotion="SAD" />
+            <audio source="song-sad-violin" block="TRUE" />
+            <talk>Tristeza detectada. se precisar posso contar uma piada para animar. quer que eu conte?</talk>
+            <evaEmotion emotion="NEUTRAL" />
+            <listen />
+            <switch var="$">
+                <case op="contain" value="quero">
+                    <evaEmotion emotion="HAPPY" />
+                    <talk>Por que o robô nunca mente? Porque ele sempre tem uma resposta programada!</talk>
+                    <evaEmotion emotion="NEUTRAL" />
+                </case>
+                <case op="contain" value="sim">
+                    <evaEmotion emotion="HAPPY" />
+                    <talk>Por que o robô nunca mente? Porque ele sempre tem uma resposta programada!</talk>
+                    <evaEmotion emotion="NEUTRAL" />
+                </case>
+                <case op="contain" value="não quero">
+                    <talk>Tudo bem,eu entendo. Quer tentar outra emoção?</talk>
+                    <listen />
+                    <switch var="$">
+                        <case op="contain" value="sim">
+                            <goto target="volt" />
+                        </case>
+                        <case op="contain" value="quero">
+                            <goto target="volt" />
+                        </case>
+                        <case op="contain" value="não">
+                            <talk>Tudo bem! Sem problemas.</talk>
+                        </case>
+                    </switch>
+                </case>
+                <case op="contain" value="não">
+                    <talk>Tudo bem,eu entendo. Quer tentar outra emoção?</talk>
+                    <listen />
+                    <switch var="$">
+                        <case op="contain" value="não quero">
+                            <talk>Tudo bem! Sem problemas.</talk>
+                        </case>
+                        <case op="contain" value="quero">
+                            <goto target="volt" />
+                        </case>
+                        <case op="contain" value="sim">
+                            <goto target="volt" />
+                        </case>
+                        <case op="contain" value="não">
+                            <talk>Tudo bem! Sem problemas.</talk>
+                        </case>
+                    </switch>
+                </case>
+            </switch>
+        </case>
+        <case op="exact" value="raiva">
+            <evaEmotion emotion="ANGRY" />
+            <talk>Raiva detectada! Que tal uma pausa para respirar um pouco? Vou tocar um som de meditação para ajudar</talk>
+            <evaEmotion emotion="NEUTRAL" />
+            <audio source="efx-wand1" block="TRUE" />
+        </case>
+        <case op="exact" value="surpreso">
+            <evaEmotion emotion="SURPRISE" />
+            <audio source="efx-susto" block="TRUE" />
+            <talk>Uau! Surpresa detectada! O que será que te deixou assim? Foi minha beleza robótica?</talk>
+            <evaEmotion emotion="NEUTRAL" />
+        </case>
+        <case op="exact" value="medo">
+            <evaEmotion emotion="FEAR" />
+            <talk>Vejo que você está com medo. Isso é normal, não precisa se preocupar.</talk>
+            <talk>Vou tocar uma música suave para deixar o ambiente mais confortável.</talk>
+             <audio source="efx-wand1" block="TRUE" />
+            <evaEmotion emotion="NEUTRAL" />
+            <wait duration="1000" />
+        </case>
+        <case op="exact" value="nojo">
+            <evaEmotion emotion="DISGUST" />
+            <audio source="efx-annoyed-female" block="TRUE" />
+            <talk>Se for cheiro ruim, pode deixar comigo! Ainda bem que eu não tenho nariz</talk>
+             <evaEmotion emotion="NEUTRAL" />
+        </case>
+        <case op="exact" value="apaixonada">
+            <evaEmotion emotion="INLOVE" />
+            <audio source="song-careless" block="TRUE" />
+            <talk>Sentindo amor no ar! Que momento especial.</talk>
+            <evaEmotion emotion="NEUTRAL" />
+        </case>
+        <case op="exact" value="neutro">
+            <evaEmotion emotion="NEUTRAL" />
+            <audio source="efx-tic-toc" block="TRUE" />
+            <talk>Então esssa é a famosa cara de segunda feira!</talk>
+        </case>
+    </switch>
+    <evaEmotion emotion="NEUTRAL" />
+    <talk>Falando nisso, eu também consigo detectar expressões faciais</talk>
+    <talk>Faça uma expressão, qualquer uma!</talk>
+    <userEmotion var="expressao"/>
+    <switch var="expressao">
+        <case op="exact" value="NEUTRAL">
+            <talk>Me parece que você está com uma expressão Neutra!</talk>
+        </case>
+        <case op="exact" value="HAPPY">
+            <talk>Me parece que você está com uma expressão de feliz</talk>
+        </case>
+        <case op="exact" value="SAD">
+            <talk>Me parece que você está com uma expressão de triste</talk>
+        </case>
+        <case op="exact" value="ANGRY">
+            <talk>Me parece que você está com uma expressão de raiva</talk>
+        </case>
+        <case op="exact" value="FEAR">
+            <talk>Me parece que você está com uma expressão de medo</talk>
+        </case>
+        <case op="exact" value="SURPRISE">
+            <talk>Me parece que você está com uma expressão de surpresa</talk>
+        </case>
+        <case op="exact" value="DISGUST">
+            <talk>Me parece que você está com uma expressão de nojo</talk>
+        </case>
+        <case op="exact" value="INLOVE">
+            <talk>Me parece que você está com uma expressão de apaixonado</talk>
+        </case>
+    </switch>
+    <talk>A emoção que eu falei está certa?</talk>
+    <listen />
+    <switch var="$">
+        <case op="contain" value="acertou">
+            <talk>Que bom! Parece que meu treinamento está dando resultado!</talk>
+            <evaEmotion emotion="HAPPY" />
+        </case>
+        <case op="contain" value="sim">
+            <talk>Que bom! Parece que meu treinamento está dando resultado!</talk>
+            <evaEmotion emotion="HAPPY" />
+        </case>
+        <case op="contain" value="não">
+            <evaEmotion emotion="SAD" />
+            <talk>Vou continuar treinando! Cada rosto é um desafio diferente.</talk>
+            <evaEmotion emotion="NEUTRAL" />
+        </case>
+        <case op="contain" value="não acertou">
+            <evaEmotion emotion="SAD" />
+            <talk>Vou continuar treinando! Cada rosto é um desafio diferente.</talk>
+            <evaEmotion emotion="NEUTRAL" />
+        </case>
+        <case op="contain" value="está">
+            <talk>Que bom! Parece que meu treinamento está dando resultado!</talk>
+            <evaEmotion emotion="HAPPY" />
+            <evaEmotion emotion="NEUTRAL" />
+        </case>
+    </switch>
+    <evaEmotion emotion="NEUTRAL" />
+    <talk>Tecnologia também pode ser acolhedora. Pra encerrar, irei tocar um som especial só pra você. quais dessas opções você escolhe. clássico, samba ou Pop</talk>
+    <led animation="HAPPY" id="voltar"/>
+    <listen />
+    <switch var="$">
+        <case op="contain" value="clássico">
+            <evaEmotion emotion="HAPPY" />
+            <motion head="NO"/>
+            <audio source="song-vivaldi-spring" block="TRUE" />
+            <led animation="RAINBOW" />
+            <evaEmotion emotion="NEUTRAL" /> 
+        </case>
+        <case op="contain" value="samba">
+            <evaEmotion emotion="HAPPY" />
+            <motion head="NO"/>
+            <audio source="song-samba-loop" block="TRUE" />
+            <led animation="RAINBOW" />
+            <evaEmotion emotion="NEUTRAL" />
+        </case>
+        <case op="contain" value="pop">
+            <evaEmotion emotion="HAPPY" />
+            <motion head="YES"/>
+            <audio source="song-espresso" block="TRUE" />
+            <led animation="RAINBOW" />
+            
+        </case>
+        <default>
+            <evaEmotion emotion="SAD" />
+            <talk>Eu posso tocar os estilos clássico, samba ou pop. Você pode repetir novamente por favor?</talk>
+            <evaEmotion emotion="NEUTRAL" />
+            <goto target="voltar" />
+        </default>
+    </switch>
+    <evaEmotion emotion="HAPPY" />
+    <talk> Espero que tenha gostado, #nome! Foi ótimo interagir com você.</talk>
+    <talk>Até a próxima!</talk>
+  </script>
+</evaml>

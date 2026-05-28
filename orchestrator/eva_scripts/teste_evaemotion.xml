@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<evaml
+  name="teste"
+  xsi:noNamespaceSchemaLocation="../robot_package/xml_schema/evaml_schema.xsd"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <settings>
+    <voice tone="en-US_EmmaExpressive" />
+    <lightEffects mode="ON" />
+    <audioEffects mode="ON" />
+  </settings>
+  <script>
+    <evaEmotion emotion="HAPPY" />
+    <wait duration="2000" />
+    <evaEmotion emotion="SAD" />
+    <wait duration="2000" />
+    <evaEmotion emotion="ANGRY" />
+    <wait duration="2000" />
+    <evaEmotion emotion="FEAR" />
+    <wait duration="2000" />
+    <evaEmotion emotion="SURPRISE" />
+    <wait duration="2000" />
+    <evaEmotion emotion="DISGUST" />
+    <wait duration="2000" />
+    <evaEmotion emotion="INLOVE" />
+    <wait duration="2000" />
+    <evaEmotion emotion="NEUTRAL" />
+    <wait duration="2000" />
+  </script>
+</evaml>

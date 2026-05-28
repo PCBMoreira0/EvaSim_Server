@@ -5,8 +5,12 @@ services:
       - "8000:8000"
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
+      - ./audio_files:/app/audio_files
+      - ./saved_models:/app/saved_models
     networks:
       - evasim_network
+    environment:
+      - EVA_SCRIPTS_DIR=${PWD}/eva_scripts
 
 networks:
   evasim_network:

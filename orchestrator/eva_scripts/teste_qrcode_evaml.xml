@@ -1,0 +1,10 @@
+<evaml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="teste" xsi:noNamespaceSchemaLocation="../robot_package/xml_schema/evaml_schema.xsd">
+  <settings>
+    <voice type="en-US_EmmaExpressive" commMode="NULL" />
+    <lightEffects mode="ON" commMode="NULL" />
+    <audioEffects mode="ON" commMode="NULL" vol="100%" />
+  </settings>
+  <script>
+    <qrRead commMode="MQTT_PUB_SUB" pubTopic="QRREAD" subTopic="QRREAD_RESPONSE" />
+  </script>
+</evaml>

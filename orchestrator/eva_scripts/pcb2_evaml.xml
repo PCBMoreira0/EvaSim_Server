@@ -1,0 +1,214 @@
+<evaml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="pcb2" xsi:noNamespaceSchemaLocation="../robot_package/xml_schema/evaml_schema.xsd">
+  
+  <settings>
+    <voice type="pt-BR_IsabelaV3Voice" commMode="NULL" />
+    <lightEffects mode="ON" commMode="NULL" />
+    <audioEffects mode="ON" commMode="NULL" vol="100%" />
+  </settings>
+  <script>
+    <evaEmotion emotion="NEUTRAL" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+    <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Olá, que bom te ver. Eu sou o EVA, um robô social e irei te mostrar algumas das minhas habilidades.</talk>
+    <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Antes de começarmos, eu gostaria de saber o seu nome. Por favor, responda apenas seu nome.</talk>
+    <listen var="nome" commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+    <evaEmotion emotion="HAPPY" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+    <wait duration="1000" commMode="MQTT_PUB" pubTopic="WAIT" />
+    <motion head="YES" commMode="MQTT_PUB" pubTopic="MOTION" />
+    <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Muito prazer, #nome!</talk>
+    <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Vamos começar!</talk>
+    <evaEmotion emotion="NEUTRAL" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+    <led animation="SURPRISE" id="volt" commMode="MQTT_PUB" pubTopic="LEDS" />
+    <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Mostre um cartão com a emoção que você está sentindo agora.</talk>
+    <qrRead var="emocao" commMode="MQTT_PUB_SUB" pubTopic="QRREAD" subTopic="QRREAD_RESPONSE" />
+    <switch var="emocao" commMode="NULL">
+        <case op="exact" value="feliz" commMode="NULL">
+            <evaEmotion emotion="HAPPY" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+            <motion head="YES" commMode="MQTT_PUB" pubTopic="MOTION" />
+            <audio source="song-take-on-me" block="TRUE" commMode="MQTT_PUB_SUB" pubTopic="AUDIO" subTopic="AUDIO_RESPONSE" />
+            <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Felicidade detectada! Parece que você acordou com o pé direito hoje. Eu fico assim quando encontro Wi-Fi rápido.</talk>
+            <led animation="HAPPY" commMode="MQTT_PUB" pubTopic="LEDS" />
+        </case>
+        <case op="exact" value="triste" commMode="NULL">
+            <evaEmotion emotion="SAD" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+            <audio source="song-sad-violin" block="TRUE" commMode="MQTT_PUB_SUB" pubTopic="AUDIO" subTopic="AUDIO_RESPONSE" />
+            <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Tristeza detectada. se precisar posso contar uma piada para animar. quer que eu conte?</talk>
+            <evaEmotion emotion="NEUTRAL" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+            <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+            <switch var="$" commMode="NULL">
+                <case op="contain" value="quero" commMode="NULL">
+                    <evaEmotion emotion="HAPPY" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+                    <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Por que o robô nunca mente? Porque ele sempre tem uma resposta programada!</talk>
+                    <evaEmotion emotion="NEUTRAL" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+                </case>
+                <case op="contain" value="sim" commMode="NULL">
+                    <evaEmotion emotion="HAPPY" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+                    <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Por que o robô nunca mente? Porque ele sempre tem uma resposta programada!</talk>
+                    <evaEmotion emotion="NEUTRAL" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+                </case>
+                <case op="contain" value="não quero" commMode="NULL">
+                    <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Tudo bem,eu entendo. Quer tentar outra emoção?</talk>
+                    <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+                    <switch var="$" commMode="NULL">
+                        <case op="contain" value="sim" commMode="NULL">
+                            <goto target="volt" commMode="NULL" />
+                        </case>
+                        <case op="contain" value="quero" commMode="NULL">
+                            <goto target="volt" commMode="NULL" />
+                        </case>
+                        <case op="contain" value="não" commMode="NULL">
+                            <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Tudo bem! Sem problemas.</talk>
+                        </case>
+                    </switch>
+                </case>
+                <case op="contain" value="não" commMode="NULL">
+                    <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Tudo bem,eu entendo. Quer tentar outra emoção?</talk>
+                    <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+                    <switch var="$" commMode="NULL">
+                        <case op="contain" value="não quero" commMode="NULL">
+                            <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Tudo bem! Sem problemas.</talk>
+                        </case>
+                        <case op="contain" value="quero" commMode="NULL">
+                            <goto target="volt" commMode="NULL" />
+                        </case>
+                        <case op="contain" value="sim" commMode="NULL">
+                            <goto target="volt" commMode="NULL" />
+                        </case>
+                        <case op="contain" value="não" commMode="NULL">
+                            <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Tudo bem! Sem problemas.</talk>
+                        </case>
+                    </switch>
+                </case>
+            </switch>
+        </case>
+        <case op="exact" value="raiva" commMode="NULL">
+            <evaEmotion emotion="ANGRY" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+            <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Raiva detectada! Que tal uma pausa para respirar um pouco? Vou tocar um som de meditação para ajudar</talk>
+            <evaEmotion emotion="NEUTRAL" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+            <audio source="efx-wand1" block="TRUE" commMode="MQTT_PUB_SUB" pubTopic="AUDIO" subTopic="AUDIO_RESPONSE" />
+        </case>
+        <case op="exact" value="surpreso" commMode="NULL">
+            <evaEmotion emotion="SURPRISE" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+            <audio source="efx-susto" block="TRUE" commMode="MQTT_PUB_SUB" pubTopic="AUDIO" subTopic="AUDIO_RESPONSE" />
+            <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Uau! Surpresa detectada! O que será que te deixou assim? Foi minha beleza robótica?</talk>
+            <evaEmotion emotion="NEUTRAL" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+        </case>
+        <case op="exact" value="medo" commMode="NULL">
+            <evaEmotion emotion="FEAR" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+            <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Vejo que você está com medo. Isso é normal, não precisa se preocupar.</talk>
+            <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Vou tocar uma música suave para deixar o ambiente mais confortável.</talk>
+             <audio source="efx-wand1" block="TRUE" commMode="MQTT_PUB_SUB" pubTopic="AUDIO" subTopic="AUDIO_RESPONSE" />
+            <evaEmotion emotion="NEUTRAL" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+            <wait duration="1000" commMode="MQTT_PUB" pubTopic="WAIT" />
+        </case>
+        <case op="exact" value="nojo" commMode="NULL">
+            <evaEmotion emotion="DISGUST" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+            <audio source="efx-annoyed-female" block="TRUE" commMode="MQTT_PUB_SUB" pubTopic="AUDIO" subTopic="AUDIO_RESPONSE" />
+            <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Se for cheiro ruim, pode deixar comigo! Ainda bem que eu não tenho nariz</talk>
+             <evaEmotion emotion="NEUTRAL" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+        </case>
+        <case op="exact" value="apaixonada" commMode="NULL">
+            <evaEmotion emotion="INLOVE" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+            <audio source="song-careless" block="TRUE" commMode="MQTT_PUB_SUB" pubTopic="AUDIO" subTopic="AUDIO_RESPONSE" />
+            <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Sentindo amor no ar! Que momento especial.</talk>
+            <evaEmotion emotion="NEUTRAL" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+        </case>
+        <case op="exact" value="neutro" commMode="NULL">
+            <evaEmotion emotion="NEUTRAL" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+            <audio source="efx-tic-toc" block="TRUE" commMode="MQTT_PUB_SUB" pubTopic="AUDIO" subTopic="AUDIO_RESPONSE" />
+            <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Então esssa é a famosa cara de segunda feira!</talk>
+        </case>
+    </switch>
+    <evaEmotion emotion="NEUTRAL" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+    <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Falando nisso, eu também consigo detectar expressões faciais</talk>
+    <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Faça uma expressão, qualquer uma!</talk>
+    <userEmotion var="expressao" commMode="MQTT_PUB_SUB" pubTopic="USEREMOTION" subTopic="USEREMOTION_RESPONSE" />
+    <switch var="expressao" commMode="NULL">
+        <case op="exact" value="NEUTRAL" commMode="NULL">
+            <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Me parece que você está com uma expressão Neutra!</talk>
+        </case>
+        <case op="exact" value="HAPPY" commMode="NULL">
+            <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Me parece que você está com uma expressão de feliz</talk>
+        </case>
+        <case op="exact" value="SAD" commMode="NULL">
+            <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Me parece que você está com uma expressão de triste</talk>
+        </case>
+        <case op="exact" value="ANGRY" commMode="NULL">
+            <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Me parece que você está com uma expressão de raiva</talk>
+        </case>
+        <case op="exact" value="FEAR" commMode="NULL">
+            <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Me parece que você está com uma expressão de medo</talk>
+        </case>
+        <case op="exact" value="SURPRISE" commMode="NULL">
+            <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Me parece que você está com uma expressão de surpresa</talk>
+        </case>
+        <case op="exact" value="DISGUST" commMode="NULL">
+            <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Me parece que você está com uma expressão de nojo</talk>
+        </case>
+        <case op="exact" value="INLOVE" commMode="NULL">
+            <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Me parece que você está com uma expressão de apaixonado</talk>
+        </case>
+    </switch>
+    <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">A emoção que eu falei está certa?</talk>
+    <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+    <switch var="$" commMode="NULL">
+        <case op="contain" value="acertou" commMode="NULL">
+            <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Que bom! Parece que meu treinamento está dando resultado!</talk>
+            <evaEmotion emotion="HAPPY" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+        </case>
+        <case op="contain" value="sim" commMode="NULL">
+            <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Que bom! Parece que meu treinamento está dando resultado!</talk>
+            <evaEmotion emotion="HAPPY" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+        </case>
+        <case op="contain" value="não" commMode="NULL">
+            <evaEmotion emotion="SAD" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+            <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Vou continuar treinando! Cada rosto é um desafio diferente.</talk>
+            <evaEmotion emotion="NEUTRAL" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+        </case>
+        <case op="contain" value="não acertou" commMode="NULL">
+            <evaEmotion emotion="SAD" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+            <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Vou continuar treinando! Cada rosto é um desafio diferente.</talk>
+            <evaEmotion emotion="NEUTRAL" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+        </case>
+        <case op="contain" value="está" commMode="NULL">
+            <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Que bom! Parece que meu treinamento está dando resultado!</talk>
+            <evaEmotion emotion="HAPPY" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+            <evaEmotion emotion="NEUTRAL" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+        </case>
+    </switch>
+    <evaEmotion emotion="NEUTRAL" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+    <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Tecnologia também pode ser acolhedora. Pra encerrar, irei tocar um som especial só pra você. quais dessas opções você escolhe. clássico, samba ou Pop</talk>
+    <led animation="HAPPY" id="voltar" commMode="MQTT_PUB" pubTopic="LEDS" />
+    <listen commMode="MQTT_PUB_SUB" pubTopic="LISTEN" subTopic="LISTEN_RESPONSE" language="pt-BR" />
+    <switch var="$" commMode="NULL">
+        <case op="contain" value="clássico" commMode="NULL">
+            <evaEmotion emotion="HAPPY" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+            <motion head="NO" commMode="MQTT_PUB" pubTopic="MOTION" />
+            <audio source="song-vivaldi-spring" block="TRUE" commMode="MQTT_PUB_SUB" pubTopic="AUDIO" subTopic="AUDIO_RESPONSE" />
+            <led animation="RAINBOW" commMode="MQTT_PUB" pubTopic="LEDS" />
+            <evaEmotion emotion="NEUTRAL" commMode="MQTT_PUB" pubTopic="EVAEMOTION" /> 
+        </case>
+        <case op="contain" value="samba" commMode="NULL">
+            <evaEmotion emotion="HAPPY" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+            <motion head="NO" commMode="MQTT_PUB" pubTopic="MOTION" />
+            <audio source="song-samba-loop" block="TRUE" commMode="MQTT_PUB_SUB" pubTopic="AUDIO" subTopic="AUDIO_RESPONSE" />
+            <led animation="RAINBOW" commMode="MQTT_PUB" pubTopic="LEDS" />
+            <evaEmotion emotion="NEUTRAL" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+        </case>
+        <case op="contain" value="pop" commMode="NULL">
+            <evaEmotion emotion="HAPPY" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+            <motion head="YES" commMode="MQTT_PUB" pubTopic="MOTION" />
+            <audio source="song-espresso" block="TRUE" commMode="MQTT_PUB_SUB" pubTopic="AUDIO" subTopic="AUDIO_RESPONSE" />
+            <led animation="RAINBOW" commMode="MQTT_PUB" pubTopic="LEDS" />
+            
+        </case>
+        <default commMode="NULL">
+            <evaEmotion emotion="SAD" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+            <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Eu posso tocar os estilos clássico, samba ou pop. Você pode repetir novamente por favor?</talk>
+            <evaEmotion emotion="NEUTRAL" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+            <goto target="voltar" commMode="NULL" />
+        </default>
+    </switch>
+    <evaEmotion emotion="HAPPY" commMode="MQTT_PUB" pubTopic="EVAEMOTION" />
+    <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE"> Espero que tenha gostado, #nome! Foi ótimo interagir com você.</talk>
+    <talk commMode="MQTT_PUB_SUB" pubTopic="TALK" subTopic="TALK_RESPONSE">Até a próxima!</talk>
+  </script>
+</evaml>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<evaml
+  name="teste"
+  xsi:noNamespaceSchemaLocation="../robot_package/xml_schema/evaml_schema.xsd"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <settings>
+    <voice type="en-US_EmmaExpressive" />
+    <lightEffects mode="ON" />
+    <audioEffects mode="ON" />
+  </settings>
+  <script>
+    <!-- <evaEmotion emotion="NEUTRAL" />
+    <led animation="HAPPY" />
+    <light state="ON" color="PINK"/>
+    <log name="LOG1">Olá LOG1</log>
+    <mqtt pubTopic="UM_TOPICO">Cheguei, Brasil!</mqtt>
+    <wait duration="2" />
+    <led animation="HAPPY" />
+    <wait duration="1" />
+    <evaEmotion emotion="INLOVE" />
+    
+    <wait duration="2" /> -->
+    <!-- <qrRead var="log_qr"/> -->
+    <!-- <userID /> -->
+    <!-- <log name="logdollar">userid dollar = $</log> -->
+    <!-- <userID var="userid_var"/> -->
+    <!-- <log name="logdollar">userid_var = #userid_var</log> -->
+     <!-- <qrRead />
+     <userID />
+     <qrRead />
+     <userID />
+    <debug operation="PAUSE" />
+    <debug operation="SHOW_DOLLAR_VAR" />
+    <debug operation="PAUSE" />
+    <debug operation="SHOW_USER_VARS" />
+    <debug operation="PAUSE" /> -->
+    <!-- <listen var="nome"/>
+    <debug operation="SHOW_USER_VARS" /> -->
+    <!-- <audio source="efx-blin" block="FALSE" />
+    <light state="ON" />
+    <wait duration="3" />
+    <evaEmotion emotion="HAPPY" />
+    <wait duration="2" />
+    <led animation="HAPPY" />
+    <wait duration="1" />
+    <light state="OFF" /> -->
+    <talk>Olá querido!</talk>
+    <evaEmotion emotion="HAPPY" />
+    <audio source="efx-blin2" block="FALSE" />
+    <talk>Como vc está?</talk>
+  </script>
+</evaml>

@@ -1,13 +1,14 @@
 from contextlib import asynccontextmanager
 
 import docker
+from docker.errors import NotFound
 import asyncio
 import uvicorn
 from fastapi import FastAPI, HTTPException, WebSocket, WebSocketDisconnect
 from websocket_manager import WebSocketManager
 import websockets
 import api
-
+import os
 
 app = FastAPI()
 
@@ -25,13 +26,20 @@ counter = 1
 
 
 async def create_container(name: str, image: str, user_id: str):
+    scripts_dir = os.getenv("EVA_SCRIPTS_DIR", "./eva_scripts")
     try:
         container = docker_client.containers.run(
             image,
             detach=True,
             name=name,
             network="orchestrator_evasim_network",
-            environment={"USER_ID": user_id})
+            environment={"USER_ID": user_id},
+            volumes={
+                scripts_dir: {
+                    "bind": "/app/sim/evaml_2025_server/eva_scripts",
+                    "mode": "rw"
+                }
+            })
         
         while container.status != 'running':
             container.reload()
@@ -90,22 +98,60 @@ async def delete(user_id : str):
         )
 
 
+async def connect_container_ws(user_id):
+    MAX_RETRIES = 30
+    retries = 0
+
+    while retries < MAX_RETRIES:
+        try:
+            container_id = user_ids[user_id]
+
+            container = docker_client.containers.get(container_id)
+
+            container.reload()
+
+            if container.status != "running":
+                raise RuntimeError(
+                    f"Container não está rodando: {container.status}"
+                )
+
+            ws = await websockets.connect(
+                f"ws://{container.name}:8000/ws/{user_id}",
+                open_timeout=5
+            )
+
+            print(f"Conectado ao container {user_id}")
+            return ws
+
+        except NotFound:
+            print(f"Container do usuário {user_id} não existe mais")
+            return None
+
+        except RuntimeError as e:
+            print(e)
+            return None
+
+        except Exception as e:
+            print(f"Aguardando websocket do container subir: {e}")
+
+            retries += 1
+            await asyncio.sleep(1)
+
+    print("Timeout aguardando websocket")
+    return None
+
+
 @app.websocket("/ws/{user_id}")
 async def websocket_endpoint(websocket: WebSocket, user_id: str):
     if user_id not in user_ids:
         await websocket.close()
         return
 
-    container = docker_client.containers.get(user_ids[user_id])
-
-    while True:
-        try:
-            container_websocket = await websockets.connect(f"ws://{container.name}:8000/ws/{user_id}", open_timeout=5)
-            print("Conectado ao container " + user_id)
-            break
-        except Exception as e:
-            print(f"Aguardando websocket do container subir: {e}")
-            await asyncio.sleep(1)
+    container_websocket = await connect_container_ws(user_id)
+    
+    if container_websocket is None:
+        await websocket.close()
+        return
 
     await websocket_manager.connect(websocket, user_id)   
 

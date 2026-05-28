@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<evaml
+  name="teste"
+  xsi:noNamespaceSchemaLocation="../robot_package/xml_schema/evaml_schema.xsd"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <settings>
+    <voice type="en-US_EmmaExpressive" />
+    <lightEffects mode="ON" />
+    <audioEffects mode="ON" />
+  </settings>
+  <script>
+  </script>
+</evaml>
