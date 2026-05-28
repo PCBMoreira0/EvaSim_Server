@@ -4,15 +4,10 @@ websockets
 asyncio
 docker
 
-
-opencv_contrib_python
-pyzbar
-ibm_cloud_sdk_core
 ibm_watson
 numpy
-tensorflow
+tensorflow-cpu
 mediapipe
-opencv-python
+opencv-python-headless
 SpeechRecognition
-misaki
 python-multipart

@@ -67,11 +67,22 @@ async def delete(user_id : str):
         await websocket_manager.disconnect(socket)
 
     container_id = user_ids.get(user_id)
-    if container_id != None:
-        container = docker_client.containers.get(container_id)
-        container.remove(force=True)
-    
-        return {"message": "simulation environment deleted", "user_id": user_id}
+    if container_id is not None:
+        try:
+            container = docker_client.containers.get(container_id)
+            container.remove(force=True)
+            return {"message": "simulation environment deleted", "user_id": user_id}
+            
+        except docker.errors.NotFound:
+            raise HTTPException(
+                status_code=404,
+                detail="Container não encontrado no Docker Engine"
+            )
+        except Exception as e:
+            raise HTTPException(
+                status_code=500,
+                detail=f"Erro interno ao remover o container: {str(e)}"
+            )
 
     raise HTTPException(
             status_code=404,
